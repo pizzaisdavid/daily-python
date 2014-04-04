@@ -17,7 +17,7 @@ def generate_colors(number):
     return colors
 
 window = pygame.display.set_mode((640, 480))
-number_of_colors = 30
+number_of_colors = 3
 colors = generate_colors(number_of_colors)
 # pygame.Color(0, 255, 0)
 print colors
