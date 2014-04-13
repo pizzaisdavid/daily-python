@@ -1,11 +1,4 @@
 def longest_two_character_substring(string):
-    def longest(iterable):
-        longest = ''
-        for item in iterable:
-            if len(longest) < len(item):
-                longest = item
-        return longest
-    
     def occurrences(iterable, item):
         array = ['']
         for x in iterable:
@@ -21,7 +14,7 @@ def longest_two_character_substring(string):
     for i, c in enumerate(string[:-1]):
         letters = string[i: i + 2]
         list_of_strings.extend(occurrences(string, letters))
-    print longest(list_of_strings)
+    print max(list_of_strings)
     
 # longest_two_character_substring('abbxcccc')
 # longest_two_character_substring('abcabcabcabccc')
