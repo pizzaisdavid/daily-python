@@ -1,23 +1,25 @@
 def longest_two_character_substring(string):
     '''.'''
-    def longest_string(iterable):
+    def longest(iterable):
         longest = ''
-        for string in iterable:
-            if len(longest) < len(string):
-                longest = string
+        for item in iterable:
+            if len(longest) < len(item):
+                longest = item
         return longest
-    
-    length = 0
-    longest_of = []
-    for i, character in enumerate(string[1:]):
-        temp = ''
-        letter_1 = string[i]
-        letter_2 = string[i + 1]
-        for c in string:
-            if letter_1 == c or letter_2 == c:
-                temp = temp + c
+        
+    def occurrences(iterable, item):
+        '''Return all occurrences of item in iterable as a list.'''
+        # return [i for i, x in enumerate(iterable) if x == item]
+        array = ['']
+        for x in iterable:
+            if x in item:
+                array[:-1] = array[:-1] + x
             else:
-                temp = temp + ' '
-        temp = temp.strip().split(' ')
-        longest_of.append(longest_string(temp))
-    print longest_string(longest_of)
+                array.append('')
+        return array
+    
+    list_of_strings = []
+    for i, character in enumerate(string[:-1]):
+        letters = string[i: i + 1]
+        list_of_strings = occurrences(string, letters)
+        
