@@ -1,11 +1,11 @@
 def show_winning_move(filename):
-    '''If there is a winning move, find and print it.'''
+    '''Print the winning move if there is one.'''
     def initialize_variables(filename):
         '''.'''
-        content = open(filename).readlines()
-        text = list(''.join(content).replace('\n', ''))
-        player = text[0]
-        board = text[1:]
+        CONTENT = open(filename).readlines()
+        TEXT = list(''.join(CONTENT).replace('\n', ''))
+        player = TEXT[0]
+        board = TEXT[1:]
         return player, board
         
     player, board = initialize_variables(filename)
