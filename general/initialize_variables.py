@@ -1,4 +1,4 @@
-def setup_variables(filename):
+def initialize_variables(filename):
     CONTENT = open(filename).readlines()
     TEXT = list(''.join(CONTENT).replace('\n', ''))
     player = TEXT[0]
