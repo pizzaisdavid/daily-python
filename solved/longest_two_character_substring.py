@@ -4,8 +4,10 @@ def longest_two_character_substring(string):
         for x in iterable:
             if x in item:
                 array[-1] = array[-1] + x
-            else:
+            elif array[-1] != '':
                 array.append('')
+        if array[-1] == '':
+            array.pop(-1)
         return array
     
     list_of_strings = []
