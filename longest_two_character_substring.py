@@ -22,3 +22,7 @@ def longest_two_character_substring(string):
         letters = string[i: i + 2]
         list_of_strings.extend(occurrences(string, letters))
     print longest(list_of_strings)
+    
+# longest_two_character_substring('abbxcccc')
+# longest_two_character_substring('abcabcabcabccc')
+# longest_two_character_substring('qwertyytrewq')
