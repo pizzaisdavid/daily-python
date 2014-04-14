@@ -1,7 +1,7 @@
-def occurrences(iterable, item):
+def occurrences(iterable, find):
     '''Return all indices of item in iterable as a list.'''
     indices = []
     for i, x in enumerate(iterable):
-        if x == item:
+        if find == x:
             indices.append(i)
     return indices
