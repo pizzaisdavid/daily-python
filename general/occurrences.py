@@ -1,7 +1,6 @@
 def occurrences(sequence, find):
-    '''Return all indices of item in iterable as a list.'''
     indices = []
-    for index, item in enumerate(sequence):
-        if find == item:
+    for index, element in enumerate(sequence):
+        if find == element:
             indices.append(index)
     return indices
