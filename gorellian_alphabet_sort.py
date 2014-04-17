@@ -13,18 +13,23 @@ def gorellian_alphabet_sort(filename):
                 return False
         return True
         
-    def label(order, words):
-        placement = {}
-        for word in words:
-            index = order.find(word[0].lower())
-            if index not in placement.keys():
-                placement[index] = [word]
-            else:
-                placement[index].append(word)
+    def place(order, sequence):
+        indices = []
+        for sequence in element:
+            indices.append(order.find(i))
+        return (indices, element)
+            
+    def label(order, sequence):
+        placement = []
+        for element in sequence:
+            placement.append(place(order, element))
         return placement
+            
 
     words, order = initialize_variables('d')
     if is_alphabet(order):
-        print sorted(label(order, words).keys())
+        print label(order, words)
 
 gorellian_alphabet_sort('d')
+
+    
