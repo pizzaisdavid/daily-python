@@ -12,17 +12,15 @@ def gorellian_alphabet_sort(filename):
             if letter not in possible_alphabet:
                 return False
         return True
-        
-    def place(order, sequence):
-        indices = []
-        for sequence in element:
-            indices.append(order.find(i))
-        return (indices, element)
             
     def label(order, sequence):
-        placement = []
+        placement = {}
         for element in sequence:
-            placement.append(place(order, element))
+            index = order.find(element[0].lower())
+            if index in placement.key():
+                placement[index].append(element)
+            else:
+                palcement[index] = [element]
         return placement
             
 
