@@ -24,43 +24,42 @@ def gorellian_alphabet_sort(filename):
         return placement
 
     def length(sequence):
-        print sequence
-        if len(sequence) == 2:
-            longer = max(sequence, key=len)
-            if len(longer) == len(sequence[0]):
-                return sequence[1], sequence[0]
-            return sequence[0], sequence[1]
-        elif len(sequence) == 1:
-            return sequence[0]
+        longer = max(sequence, key=len)
+        if len(longer) == len(sequence[0]):
+            return sequence[1], sequence[0]
+        return sequence[0], sequence[1]
 
     def compare(order, words):
-        shorter, longer = length(words)
-        for index in range(len(shorter)):
-            shorter_index = order.find(shorter[index].lower())
-            longer_index = order.find(shorter[index].lower())
-            if shorter_index < longer_index:
-                return [shorter, longer]
-            elif shorter_index > longer_index:
-                return [longer, shorter]
-        return [shorter, longer]
+        if len(words) == 2:
+            shorter, longer = length(words)
+            for index, character in enumerate(shorter):
+                shorter_index = order.find(shorter[index].lower())
+                longer_index = order.find(shorter[index].lower())
+                if shorter_index > longer_index:
+                    return [shorter, longer]
+                elif shorter_index < longer_index:
+                    return [longer, shorter]
+            return [shorter, longer]
+        return words
 
     def sorting(order, sequence):
-        sort = []
-        while len(sequence) > 1:
-            for index in reversed(range(len(sequence))):
-                compare(order, sequence[index-2: index])
-            sort.append(sequence[0])
-            del sequence[0]
-        return sort
-            
-            
-        
+        for d, s in enumerate(sequence):
+            for i, element in enumerate(sequence):
+                sequence[i: i+2] = compare(order, sequence[i: i+2])
+        return sequence
+
+    def format_input(dictonary):
+        keys = sorted(dictonary.keys())
+        for key in keys:
+            for item in dictonary[key]:
+                print item
+
     words, order = initialize_variables('d')
     if is_alphabet(order):
         groups = label(order, words)
         for key in sorted(groups.keys()):
             groups[key] = sorting(order, groups[key])
-        print groups
+        print format_input(groups)
 
 gorellian_alphabet_sort('d')
 
