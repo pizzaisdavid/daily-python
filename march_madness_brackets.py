@@ -29,3 +29,34 @@ def march_madness_bracket(string):
 
 decode('(2{[0]1})')
         
+def occurrences(string, brackets):
+  array = []
+  for symbol in brackets:
+    array += [i for i, x in enumerate(string) if x == symbol]
+  return array
+
+def opening(string, last):
+  for n in reversed(sorted(occurrences(string, '([{'))):
+    if n < last:
+      return n
+
+def closing(string):
+  return min(occurrences(string, ')]}'))
+
+def trim(s, n1, n2):
+  return s[n1 + 1: n2].strip() + ' '
+
+def cut(s, n1, n2):
+  return s[:n1] + s[n2 + 1:]
+
+def solve(string):
+  phrase = ''
+  while len(string):
+    last = closing(string)
+    first = opening(string, last)
+    phrase += trim(string, first, last)
+    string = cut(string, first, last)
+  print phrase.replace('  ', ' ')
+
+solve('{years [four score] ago (and seven) our fathers}')
+solve('[racket for {brackets (matching) is a} computers]')
