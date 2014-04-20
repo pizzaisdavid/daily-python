@@ -1,7 +1,5 @@
 def group(sequence):
-    """
-    Groups a list by a characteristic and puts it an a dictionary.
-    """
+    """Group by a characteristic and put them in a dictionary."""
     dictionary = {}
     for element in sequence:
         key = len(elment) # Characteristic we are grouping by.
