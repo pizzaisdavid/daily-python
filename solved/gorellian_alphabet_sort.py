@@ -1,12 +1,12 @@
-def gorellian_alphabet_sort(filename):
-    '''.'''
-    def initialize_variables(filename):
+def gorellian_alphabet_sort():
+    '''Sorts words given a specific ordering.'''
+    def initialize_variables():
         order = 'ZYXWVuTSRQpONMLkJIHGFEDCBa'.lower()
         words = ['go', 'aLL', 'ACM', 'teamS', 'Go']
         return words, order
         
     def is_alphabet(possible_alphabet):
-        '''.'''
+        '''Checks if the inputs contains all 26 letters.'''
         alphabet = 'abcdefghijklmnopqrstuvwxyz'
         for letter in alphabet:
             if letter not in possible_alphabet:
@@ -22,11 +22,11 @@ def gorellian_alphabet_sort(filename):
             dictionary[key].append(element)
         return dictionary
 
-    def length(sequence):
-        longer = max(sequence, key=len)
-        if len(longer) == len(sequence[0]):
-            return sequence[1], sequence[0]
-        return sequence[0], sequence[1]
+    def length(x):
+        '''Takes a list that has a length of two and returns shorter, longer'''
+        if len(x[1]) < len(x[0]):
+            return x[1], x[0]
+        return x[0], x[1]
 
     def compare(order, words):
         if len(words) == 2:
@@ -52,14 +52,15 @@ def gorellian_alphabet_sort(filename):
             for item in dictonary[key]:
                 print item
 
-    words, order = initialize_variables('d')
+    words, order = initialize_variables()
     if is_alphabet(order):
         groups = group(order, words)
         for key in sorted(groups.keys()):
             groups[key] = sorting(order, groups[key])
         format_input(groups)
 
-gorellian_alphabet_sort('d')
+gorellian_alphabet_sort()
+
 
 #/////
 #   THIS CODE WORKS
