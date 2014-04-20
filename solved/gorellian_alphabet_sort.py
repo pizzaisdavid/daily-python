@@ -1,25 +1,26 @@
 def gorellian_alphabet_sort(filename):
+    '''.'''
     def initialize_variables(filename):
         order = 'ZYXWVuTSRQpONMLkJIHGFEDCBa'.lower()
         words = ['go', 'aLL', 'ACM', 'teamS', 'Go']
         return words, order
         
     def is_alphabet(possible_alphabet):
+        '''.'''
         alphabet = 'abcdefghijklmnopqrstuvwxyz'
         for letter in alphabet:
             if letter not in possible_alphabet:
                 return False
         return True
             
-    def label(order, sequence):
-        placement = {}
+    def group(order, sequence):
+        dictionary = {}
         for element in sequence:
-            index = order.find(element[0].lower())
-            if index in placement.keys():
-                placement[index].append(element)
-            else:
-                placement[index] = [element]
-        return placement
+            key = order.find(element[0].lower())
+            if key not in dictionary:
+                dictionary[key] = []
+            dictionary[key].append(element)
+        return dictionary
 
     def length(sequence):
         longer = max(sequence, key=len)
@@ -53,7 +54,7 @@ def gorellian_alphabet_sort(filename):
 
     words, order = initialize_variables('d')
     if is_alphabet(order):
-        groups = label(order, words)
+        groups = group(order, words)
         for key in sorted(groups.keys()):
             groups[key] = sorting(order, groups[key])
         format_input(groups)
