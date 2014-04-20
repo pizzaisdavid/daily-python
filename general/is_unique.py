@@ -1,4 +1,2 @@
-def is_unique(sequence):
-    if set(sequence) == sequence:
-        return True
-    return False
+def is_unique(x): 
+    return len(set(string)) == len(string)
