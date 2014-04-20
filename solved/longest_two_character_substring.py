@@ -1,22 +1,19 @@
 def longest_two_character_substring(string):
-    def occurrences(iterable, item):
+    def occurrences(sequence, find):
         array = ['']
-        for x in iterable:
-            if x in item:
-                array[-1] = array[-1] + x
-            elif array[-1] != '':
+        for element in sequence:
+            if element in find:
+                array[-1] += element
+            else:
                 array.append('')
-        if array[-1] == '':
-            array.pop(-1)
         return array
     
-    list_of_strings = []
+    substrings = []
     for i, c in enumerate(string[:-1]):
         letters = string[i: i + 2]
-        list_of_strings.extend(occurrences(string, letters))
-    print max(list_of_strings, key = len)
+        substrings.extend(occurrences(string, letters))
+    print max(substrings, key = len)
 
-# longest_two_character_substring('abbxcccc')
-# longest_two_character_substring('abcabcabcabccc')
-# longest_two_character_substring('qwertyytrewq')
-
+longest_two_character_substring('abbxcccc')
+longest_two_character_substring('abcabcabcabccc')
+longest_two_character_substring('qwertyytrewq')
