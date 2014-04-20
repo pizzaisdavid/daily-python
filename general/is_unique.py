@@ -1,2 +1,2 @@
 def is_unique(x): 
-    return len(set(string)) == len(string)
+    return len(set(x)) == len(x)
