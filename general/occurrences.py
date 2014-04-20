@@ -1,6 +1,2 @@
 def occurrences(sequence, find):
-    indices = []
-    for index, element in enumerate(sequence):
-        if find == element:
-            indices.append(index)
-    return indices
+    return [i for i, x in enumerate(sequence) if x == find]
