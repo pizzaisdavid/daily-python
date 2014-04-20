@@ -6,7 +6,6 @@ def create():
     cube = {'B':'w', 'U':'y', 'F':'r', 'R':'g', 'B':'o', 'L':'b'}
     for key in cube.keys():
         cube[key] = [cube[key]] * 9
-    cube['right'] = [0,1,2,3,4,5,6,7,8]
     return cube
 
 def rotate(face, transfer):
