@@ -19,7 +19,8 @@ def main(blueprint):
                 pads = int(element)
             else:
                 i = letters.find(element)
-                column = ' ' * pads + pattern[:i + 1] + ' ' * (ROW_LENGTH - pads - i)
+                column = ' ' * pads + pattern[:i + 1] 
+                column += ' ' * (ROW_LENGTH - pads - i)
                 building.append(column)
                 pads = 0
         return building
