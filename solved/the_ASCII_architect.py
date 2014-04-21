@@ -1,39 +1,30 @@
-def main():
-    def format_input(sequence):
-        return list(sequence)
-        
-    def blank_house():
-        house = []
-        for index in range(20):
-            house.append([])
-        return house
-                
-    def build_house(sequence, house):
-        numbers = '123456789'
+def main(blueprint):
+    def print_output(building):
+        i = len(building[0])
+        while i > 0:
+            row = ''
+            i -= 1
+            for column in building:
+                row += column[i]
+            print row
+
+    def structure(blueprint):
+        ROW_LENGTH = 22
+        pattern = '++--***...'
+        building = []
         letters = 'abcdefghij'
-        wall = '++--***...'
-        for index, element in enumerate(sequence):
-            spaces = 0
-            s = wall[:letters.find(element) + 1]
-            if sequence[index - 1] in numbers:
-                s = int(sequence[index - 1]) * ' ' + s
-            if element in letters:
-                i = 0
-                s = s + '                      '
-            while i != len(house):
-                house[i].append(s[i])
-                i += 1
-        return house
+        pads = 0
+        for element in blueprint:
+            if element.isdigit():
+                pads = int(element)
+            else:
+                i = letters.find(element)
+                column = ' ' * pads + pattern[:i + 1]
+                column += ' ' * (ROW_LENGTH - pads - i)
+                building.append(column)
+                pads = 0
+        return building
 
-    def format_output(sequence):
-        for element in reversed(sequence):
-            print ''.join(element)
-                
-    input_string = 'j3f3e3e3d3d3c3cee3c3c3d3d3e3e3f3fjij3f3f3e3e3d3d3c3cee3c3c3d3d3e3e3fj'
-    house = blank_house()
-    input_list = format_input(input_string)
-    house = build_house(input_string, house)
-    format_output(house)
+    print_output(structure(blueprint))
 
-main()
-
+main('j3f3e3e3d3d3c3cee3c3c3d3d3e3e3f3fjij3f3f3e3e3d3d3c3cee3c3c3d3d3e3e3fj')
