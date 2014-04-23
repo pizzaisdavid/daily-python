@@ -16,9 +16,9 @@ def solve(score):
             else:
                 score -= 3
     if score == 0:
-        print 'valid'
+        print ('valid')
     else:
-        print 'invalid'
+        print ('invalid')
 
 solve(35)
 solve(2)
