@@ -1,7 +1,4 @@
 # BUGS:
-# rock ('rock', 'crushes') lizard human wins!
-# paper ('paper', 'disproves') spock human wins!
-# paper ('paper', 'covers') rock human wins!
 
 from random import randint
 
@@ -44,7 +41,7 @@ def game():
             computer_wins += 1
         else:
             winner = human
-            move = human, rules[human][1][c_index]
+            move = rules[human][1][c_index]
             loser = computer
             who = 'human'
             human_wins += 1
