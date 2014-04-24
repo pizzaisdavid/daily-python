@@ -8,7 +8,7 @@ def game():
         print ('TYPE EXIT TO QUIT')
         print (' ')
     
-    def get_input(options, stop):
+    def get_input(options, stop=['']):
         combine = options + stop
         choice = input('Enter: ').lower()
         while choice not in combine:
@@ -17,7 +17,9 @@ def game():
 
     def RPSLS(rules, human, score, tied):
         
-        def AI(rules, played, tied):
+        def AI(rules, played, tied, AI_TYPE):
+            if AI_TYPE == 'random':
+                return list(rules.keys())[randomint(0, 4)]
             random = randint(0, 1)
             if tied[0]:
                 return rules[tied[1]][2][random]
@@ -32,7 +34,7 @@ def game():
             return True, None
 
         human_wins, computer_wins, ties = score
-        computer = AI(rules, played, tied)
+        computer = AI(rules, played, tied, AI_TYPE)
         print ('player pick: ' + human)
         print ('computer pick: ' + computer)
         computer_is_winner, c_index = occurrences(rules[human][0], computer)
@@ -76,11 +78,13 @@ def game():
     human = 'rock'
     tied = (False, '')
     introduction(options)
+    print ('Which AI would you like to play against? [random/learning]')
+    IA_type = get_input(['random', 'learning'])
     while True:
         human = get_input(options, stop)
         if human in stop:
             break
-        score, human, tied = RPSLS(rules, human, score, tied)
+        score, human, tied = RPSLS(rules, human, score, tied, AI_TYPE)
         played[human] += 1
     human_wins, computer_wins, ties = score
     total = sum(score)
