@@ -1,5 +1,3 @@
-# BUGS:
-
 from random import randint
 
 def game():
@@ -17,7 +15,16 @@ def game():
             choice = input(options).lower()
         return choice
 
-    def RPSLS(rules, human, score):
+    def RPSLS(rules, human, score, tied):
+        
+        def AI(rules, played, tied):
+            random = randint(0, 1)
+            if tied[0]:
+                return rules[tied[1]][2][random]
+            common = max(played, key=lambda x: x[0])
+            return rules[common][2][random]
+                
+        
         def occurrences(sequence, find):
             for index, element in enumerate(sequence):
                 if element == find:
@@ -25,14 +32,14 @@ def game():
             return True, None
 
         human_wins, computer_wins, ties = score
-        computer = options[randint(0, 4)]
+        computer = AI(rules, played, tied)
         print ('player pick: ' + human)
         print ('computer pick: ' + computer)
         computer_is_winner, c_index = occurrences(rules[human][0], computer)
         player_is_winner, p_index = occurrences(rules[computer][0], human)
         if human == computer:
            print ('tie')
-           return (human_wins, computer_wins, ties + 1), human
+           return (human_wins, computer_wins, ties + 1), human, (True, human)
         elif computer_is_winner:
             winner = computer
             move = rules[computer][1][p_index]
@@ -47,32 +54,40 @@ def game():
             human_wins += 1
         print (winner, move, loser, who, 'wins!', sep=' ')
         print (' ')
-        return (human_wins, computer_wins, ties), human
+        return (human_wins, computer_wins, ties), human, (False, '')
+
+    def percentage(numerator, denominator):
+        decimal_place = 2
+        percent = numerator / denominator * 100
+        return str(round(percent, decimal_place)) + '%'
         
     score = [0, 0, 0]
     rules = {
-        'rock': (['scissors', 'lizard'], ['crushes', 'crushes']),
-        'paper': (['spock', 'rock'], ['disproves', 'covers']),
-        'scissors': (['paper', 'lizard'], ['cuts', 'decapitates']),
-        'lizard': (['spock', 'paper'], ['poisons', 'eats']),
-        'spock': (['rock', 'scissors'], ['vaporizes', 'smashes'])
+        # 'option': (['things it beats'], ['moves'], ['it loses to'])
+        'rock': (['scissors', 'lizard'], ['crushes', 'crushes'], ['paper', 'spock']),
+        'paper': (['spock', 'rock'], ['disproves', 'covers'], ['scissors', 'lizard']),
+        'scissors': (['paper', 'lizard'], ['cuts', 'decapitates'], ['rock', 'spock']),
+        'lizard': (['spock', 'paper'], ['poisons', 'eats'], ['rock', 'scissors']),
+        'spock': (['rock', 'scissors'], ['vaporizes', 'smashes'], ['paper', 'lizard'])
         }
     options = list(rules.keys())
     stop = ['exit', 'stop']
     played = {'lizard': 0, 'spock': 0, 'paper': 0, 'scissors': 0, 'rock': 0}
     human = 'rock'
+    tied = (False, '')
     introduction(options)
     while True:
         human = get_input(options, stop)
         if human in stop:
             break
-        score, human = RPSLS(rules, human, score)
+        score, human, tied = RPSLS(rules, human, score, tied)
         played[human] += 1
     human_wins, computer_wins, ties = score
+    total = sum(score)
     print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
-    print ('TIES: ', ties)
-    print ('HUMAN: ', human_wins)
-    print ('COMPUTER: ', computer_wins)
+    print ('TIES:', ties, percentage(ties, total), sep=' ')
+    print ('HUMAN:', human_wins, percentage(human_wins, total), sep=' ')
+    print ('COMPUTER:', computer_wins, percentage(computer_wins, total), sep=' ')
     print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
 
 game()
