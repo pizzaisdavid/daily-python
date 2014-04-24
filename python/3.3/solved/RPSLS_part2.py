@@ -2,11 +2,15 @@ from random import randint
 
 def game():
     def introduction(options):
+        print ('WELCOME TO ROCK, PAPER, SCISSORS, SPOCK, LIZARD')
+        print ('Which AI would you like to play against? [random/learning]')
+        AI_TYPE = get_input(['random', 'learning'])
         print ('PICK ONE OF THE FOLLOWING:')
         for item in options:
             print (item)
         print ('TYPE EXIT TO QUIT')
         print (' ')
+        return AI_TYPE
     
     def get_input(options, stop=['']):
         combine = options + stop
@@ -15,7 +19,7 @@ def game():
             choice = input(options).lower()
         return choice
 
-    def RPSLS(rules, human, score, tied):
+    def RPSLS(rules, human, score, tied, AI_TYPE):
         
         def AI(rules, played, tied, AI_TYPE):
             if AI_TYPE == 'random':
@@ -77,9 +81,7 @@ def game():
     played = {'lizard': 0, 'spock': 0, 'paper': 0, 'scissors': 0, 'rock': 0}
     human = 'rock'
     tied = (False, '')
-    introduction(options)
-    print ('Which AI would you like to play against? [random/learning]')
-    IA_type = get_input(['random', 'learning'])
+    AI_TYPE = introduction(options)
     while True:
         human = get_input(options, stop)
         if human in stop:
