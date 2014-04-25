@@ -106,8 +106,7 @@ def game():
     tied = (False, '')
     AI_TYPE = introduction(options)
     while True:
-    #for i in range(10000):
-        human = AI(rules, played, tied, 'counter')
+        human = get_input(options, stop)
         if human in stop:
             break
         score, human, tied = RPSLS(rules, human, score, tied, AI_TYPE)
@@ -117,7 +116,7 @@ def game():
     print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
     print ('TIES:', ties, percentage(ties, total), sep=' ')
     print ('HUMAN:', human_wins, percentage(human_wins, total), sep=' ')
-    print ('COMPUTER:', computer_wins, percentage(computer_wins, total), sep=' ')
+    print ('COMPUTER(' + AI_TYPE + '):', computer_wins, percentage(computer_wins, total), sep=' ')
     print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
 
 game()
