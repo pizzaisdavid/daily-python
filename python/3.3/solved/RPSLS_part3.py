@@ -58,7 +58,7 @@ def main():
                         return False, index
                 return True, None
                 
-        stop = ['exit', 'stop']
+        quits = ['exit', 'stop']
         played = {
             'lizard': 0,
             'spock': 0,
@@ -82,7 +82,7 @@ def main():
         while True:
             human = get_input(options, stop)
             computer = AI(AI_TYPE, rules, options, played, tied)
-            if human in stop:
+            if human in quits:
                 break
             print ('player pick: ' + human)
             print ('computer pick: ' + computer)
