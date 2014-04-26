@@ -20,7 +20,7 @@ def main():
         print (' ')
         return AI_TYPE
     
-    def AI(rules, played, tied, AI_TYPE, options):
+    def AI(AI_TYPE, rules, options, played, tied):
     
         def highest(dictonary):
             return max(dictonary, key=lambda x: x[0])
@@ -32,8 +32,7 @@ def main():
             random = randint(0, 1)
             if tied[0]:
                 return rules[tied[1]][2][random]
-            most_played = highest(played)
-            return rules[most_played][2][random]
+            return rules[highest(played)][2][random]
 
         def counter(rules, played, tied):
             counter_counters = {'rock': 'lizard',
@@ -42,8 +41,6 @@ def main():
                                 'spock': 'scissors',
                                 'lizard': 'spock',
                                 }
-            if tied[0]:
-                return tied[1]
             return counter_counters[highest(played)]
         
         if AI_TYPE == 'random':
@@ -61,7 +58,6 @@ def main():
                 
         stop = ['exit', 'stop']
         played = {'lizard': 0, 'spock': 0, 'paper': 0, 'scissors': 0, 'rock': 0}
-        tied = (False, '')
         score = {'human_wins': 0, 'computer_wins': 0, 'ties': 0}
         rules = {
             # 'option': (['things it beats'], ['attack'], ['it loses to'])
@@ -71,9 +67,10 @@ def main():
             'spock': (['rock', 'scissors'], ['vaporizes', 'smashes'], ['paper', 'lizard']),
             'lizard': (['spock', 'paper'], ['poisons', 'eats'], ['rock', 'scissors'])
             }
+        tied = (False, '')
         while True:
             human = get_input(options, stop)
-            computer = AI(rules, played, tied, AI_TYPE, options)
+            computer = AI(AI_TYPE, rules, options, played, tied)
             if human in stop:
                 break
             print ('player pick: ' + human)
