@@ -35,12 +35,13 @@ def main():
             return rules[highest(played)][2][random]
 
         def counter(rules, played, tied):
-            counter_counters = {'rock': 'lizard',
-                                'paper': 'rock',
-                                'scissors': 'paper',
-                                'spock': 'scissors',
-                                'lizard': 'spock',
-                                }
+            counter_counters = {
+                'rock': 'lizard',
+                'paper': 'rock',
+                'scissors': 'paper',
+                'spock': 'scissors',
+                'lizard': 'spock',
+                }
             return counter_counters[highest(played)]
         
         if AI_TYPE == 'random':
@@ -57,8 +58,17 @@ def main():
                 return True, None
                 
         stop = ['exit', 'stop']
-        played = {'lizard': 0, 'spock': 0, 'paper': 0, 'scissors': 0, 'rock': 0}
-        score = {'human_wins': 0, 'computer_wins': 0, 'ties': 0}
+        played = {
+            'lizard': 0,
+            'spock': 0,
+            'paper': 0,
+            'scissors': 0,
+            'rock': 0
+            }
+        score = {'human_wins': 0,
+                 'computer_wins': 0,
+                 'ties': 0
+                 }
         rules = {
             # 'option': (['things it beats'], ['attack'], ['it loses to'])
             'rock': (['scissors', 'lizard'], ['crushes', 'crushes'], ['paper', 'spock']),
@@ -98,12 +108,13 @@ def main():
             decimal_places = 2
             percent = numerator / denominator * 100
             return str(round(percent, decimal_places)) + '%'
-            
+        
+        computer_wins, human_wins, ties = score.values()
         total = sum(score.values())
         print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
-        print ('TIES:', score['ties'], percentage(ties, total), sep=' ')
-        print ('HUMAN:', score['human_wins'], percentage(human_wins, total), sep=' ')
-        print ('COMPUTER(' + AI_TYPE + '):', score['computer_wins'], percentage(computer_wins, total), sep=' ')
+        print ('TIES:', ties, percentage(ties, total), sep=' ')
+        print ('HUMAN:', human_wins, percentage(human_wins, total), sep=' ')
+        print ('COMPUTER(' + AI_TYPE + '):', computer_wins, percentage(computer_wins, total), sep=' ')
         print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
         
     options = ['lizard', 'spock', 'paper', 'scissors', 'rock']
