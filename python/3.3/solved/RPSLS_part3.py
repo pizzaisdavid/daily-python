@@ -51,6 +51,7 @@ def main():
         return counter(rules, played, tied)
         
     def game(AI_TYPE, options):
+        
         def occurrences(sequence, find):
                 for index, element in enumerate(sequence):
                     if element == find:
@@ -102,7 +103,7 @@ def main():
             print (' ')
         return score
         
-    def scoreboard(score):
+    def scoreboard(AI_TYPE, score):
         
         def percentage(numerator, denominator):
             decimal_places = 2
@@ -120,6 +121,6 @@ def main():
     options = ['lizard', 'spock', 'paper', 'scissors', 'rock']
     AI_TYPE = introduction(options)
     score = game(AI_TYPE, options)
-    scoreboard(score)
+    scoreboard(AI_TYPE, score)
 
 main()
