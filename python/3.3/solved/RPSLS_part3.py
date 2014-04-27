@@ -66,10 +66,11 @@ def main():
             'scissors': 0,
             'rock': 0
             }
-        score = {'human_wins': 0,
-                 'computer_wins': 0,
-                 'ties': 0
-                 }
+        score = {
+            'human_wins': 0,
+            'computer_wins': 0,
+            'ties': 0
+            }
         rules = {
             # 'option': (['things it beats'], ['attack'], ['it loses to'])
             'rock': (['scissors', 'lizard'], ['crushes', 'crushes'], ['paper', 'spock']),
@@ -87,16 +88,16 @@ def main():
             print ('player pick: ' + human)
             print ('computer pick: ' + computer)
             computer_is_winner, computer_index = occurrences(rules[human][0], computer)
-            player_is_winner, player_index = occurrences(rules[computer][0], human)
+            human_is_winner, human_index = occurrences(rules[computer][0], human)
             if human == computer:
                print ('tie')
                score['ties'] += 1
                tied = (True, human)
             elif computer_is_winner:
-                attack = rules[computer][1][player_index]
+                attack = rules[computer][1][human_index]
                 print (computer, attack, human, 'computer wins!', sep=' ')
                 score['computer_wins'] += 1
-            else:
+            elif human_is_winner:
                 attack = rules[human][1][computer_index]
                 print (human, attack, computer, 'human wins!', sep=' ')
                 score['human_wins'] += 1
