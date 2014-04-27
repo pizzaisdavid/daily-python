@@ -27,7 +27,7 @@ def gorellian_alphabet_sort():
                     return [words[1], words[0]]
         return words
 
-    def sorting(order, sequence):
+    def sort(order, sequence):
         for i, element in enumerate(sequence):
             sequence[i: i+2] = compare(order, sequence[i: i+2])
         return sequence
@@ -42,38 +42,7 @@ def gorellian_alphabet_sort():
     if is_alphabet(order):
         groups = group(order, words)
         for key in sorted(groups):
-            groups[key] = sorting(order, groups[key])
+            groups[key] = sort(order, groups[key])
         format_input(groups)
 
 gorellian_alphabet_sort()
-
-#/////
-#   THIS CODE WORKS
-#/////
-
-def is_alphabet(possible_alphabet):
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    for letter in alphabet:
-        if letter not in possible_alphabet:
-            return False
-    return True
-
-def indices(order, sequence):
-    temp = []
-    for element in sequence:
-        temp.append(order.find(element.lower()))
-    return temp
-
-order = 'ZYXWVuTSRQpONMLkJIHGFEDCBa'.lower()
-words = ['go', 'aLL', 'ACM', 'teamS', 'Go']
-indices_and_words = []
-
-if is_alphabet(order):
-    for word in words:
-        indices_and_words.append((indices(order, word), word))
-    ouput = sorted(indices_and_words, key = lambda x: x[0])
-    for x in ouput:
-        print x[1]
-
-
-    
