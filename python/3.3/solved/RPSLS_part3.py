@@ -50,6 +50,12 @@ def main():
             return learning(rules, played, tied)
         return counter(rules, played, tied)
         
+    class score():
+        def __init__(self):
+            self.human_wins = 0
+            self.computer_wins = 0
+            self.ties = 0
+        
     def game(AI_TYPE, options):
         
         def occurrences(sequence, find):
@@ -66,11 +72,8 @@ def main():
             'scissors': 0,
             'rock': 0
             }
-        score = {
-            'human_wins': 0,
-            'computer_wins': 0,
-            'ties': 0
-            }
+        
+        score = score()
         rules = {
             # 'option': (['things it beats'], ['attack'], ['it loses to'])
             'rock': (['scissors', 'lizard'], ['crushes', 'crushes'], ['paper', 'spock']),
@@ -91,16 +94,16 @@ def main():
             human_is_winner, human_index = occurrences(rules[computer][0], human)
             if human == computer:
                print ('tie')
-               score['ties'] += 1
+               score.ties += 1
                tied = (True, human)
             elif computer_is_winner:
                 attack = rules[computer][1][human_index]
                 print (computer, attack, human, 'computer wins!', sep=' ')
-                score['computer_wins'] += 1
+                score.computer_wins += 1
             elif human_is_winner:
                 attack = rules[human][1][computer_index]
                 print (human, attack, computer, 'human wins!', sep=' ')
-                score['human_wins'] += 1
+                score.human_wins += 1
             print (' ')
         return score
         
