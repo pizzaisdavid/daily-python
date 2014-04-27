@@ -50,11 +50,11 @@ def main():
             return learning(rules, played, tied)
         return counter(rules, played, tied)
         
-    class score():
-        def __init__(self):
-            self.human_wins = 0
-            self.computer_wins = 0
-            self.ties = 0
+    class set_score():
+        def __init__(self, human=0, computer=0, ties=0):
+            self.human = human
+            self.computer = computer
+            self.ties = ties
         
     def game(AI_TYPE, options):
         
@@ -72,8 +72,6 @@ def main():
             'scissors': 0,
             'rock': 0
             }
-        
-        score = score()
         rules = {
             # 'option': (['things it beats'], ['attack'], ['it loses to'])
             'rock': (['scissors', 'lizard'], ['crushes', 'crushes'], ['paper', 'spock']),
@@ -84,7 +82,7 @@ def main():
             }
         tied = (False, '')
         while True:
-            human = get_input(options, stop)
+            human = get_input(options, quits)
             computer = AI(AI_TYPE, rules, options, played, tied)
             if human in quits:
                 break
@@ -99,32 +97,35 @@ def main():
             elif computer_is_winner:
                 attack = rules[computer][1][human_index]
                 print (computer, attack, human, 'computer wins!', sep=' ')
-                score.computer_wins += 1
+                score.computer += 1
             elif human_is_winner:
                 attack = rules[human][1][computer_index]
                 print (human, attack, computer, 'human wins!', sep=' ')
-                score.human_wins += 1
+                score.human += 1
             print (' ')
-        return score
         
-    def scoreboard(AI_TYPE, score):
+    def scoreboard(AI_TYPE):
         
-        def percentage(numerator, denominator):
+        def percent(numerator):
+            total = score.human + score.computer + score.ties
+            percent = numerator / total * 100
             decimal_places = 2
-            percent = numerator / denominator * 100
             return str(round(percent, decimal_places)) + '%'
-        
-        computer_wins, human_wins, ties = score.values()
-        total = sum(score.values())
-        print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
-        print ('TIES:', ties, percentage(ties, total), sep=' ')
-        print ('HUMAN:', human_wins, percentage(human_wins, total), sep=' ')
-        print ('COMPUTER(' + AI_TYPE + '):', computer_wins, percentage(computer_wins, total), sep=' ')
-        print ('~~~~~~~~FINAL~SCORE~~~~~~~~')
-        
+
+        banner = '~~~~~~~~FINAL~SCORE~~~~~~~~'
+        ties = score.ties
+        human = score.human
+        computer = score.computer
+        print (banner)
+        print ('TIES:', ties, percent(ties), sep=' ')
+        print ('HUMAN:', human, percent(human), sep=' ')
+        print ('COMPUTER(' + AI_TYPE + '):', computer, percent(computer), sep=' ')
+        print (banner)
+
+    score = set_score()
     options = ['lizard', 'spock', 'paper', 'scissors', 'rock']
     AI_TYPE = introduction(options)
-    score = game(AI_TYPE, options)
-    scoreboard(AI_TYPE, score)
+    game(AI_TYPE, options)
+    scoreboard(AI_TYPE)
 
 main()
