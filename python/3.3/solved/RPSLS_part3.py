@@ -55,6 +55,9 @@ def main():
             self.human = human
             self.computer = computer
             self.ties = ties
+            
+        def total(self):
+            return self.human + self.computer + self.ties
         
     def game(AI_TYPE, options):
         
@@ -107,19 +110,15 @@ def main():
     def scoreboard(AI_TYPE):
         
         def percent(numerator):
-            total = score.human + score.computer + score.ties
-            percent = numerator / total * 100
-            decimal_places = 2
-            return str(round(percent, decimal_places)) + '%'
+            percent = numerator / score.total() * 100
+            DECIMAL_PLACES = 2
+            return str(round(percent, DECIMAL_PLACES)) + '%'
 
         banner = '~~~~~~~~FINAL~SCORE~~~~~~~~'
-        ties = score.ties
-        human = score.human
-        computer = score.computer
         print (banner)
-        print ('TIES:', ties, percent(ties), sep=' ')
-        print ('HUMAN:', human, percent(human), sep=' ')
-        print ('COMPUTER(' + AI_TYPE + '):', computer, percent(computer), sep=' ')
+        print ('TIES:', score.ties, percent(score.ties), sep=' ')
+        print ('HUMAN:', score.human, percent(score.human), sep=' ')
+        print ('COMPUTER(' + AI_TYPE + '):', score.computer, percent(score.computer), sep=' ')
         print (banner)
 
     score = set_score()
