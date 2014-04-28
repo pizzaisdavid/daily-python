@@ -1,14 +1,6 @@
 from random import randint
 
 def main():
-    
-    def get_input(options, stop=['']):
-        combine = options + stop
-        choice = input('Enter: ').lower()
-        while choice not in combine:
-            choice = input(options).lower()
-        return choice
-        
     def introduction(options):
         print ('WELCOME TO ROCK, PAPER, SCISSORS, SPOCK, LIZARD')
         print ('Which AI would you like to play against? [random/learning/counter]')
@@ -19,74 +11,15 @@ def main():
         print ('TYPE EXIT TO QUIT')
         print (' ')
         return TYPE
-        
-    def highest(dictonary):
-        return max(dictonary, key=lambda x: x[0])
+    
+    def get_input(options, stop=['']):
+        combine = options + stop
+        choice = input('Enter: ').lower()
+        while choice not in combine:
+            choice = input(options).lower()
+        return choice
 
-    class AI:
-    
-        def __init__(self, TYPE='', rules={}, options=[], played={}, tied=()):
-            self.TYPE = TYPE
-            self.rules = rules
-            self.options = options
-            self.played = played
-            self.tied = tied
-        
-        def random(self):
-            return self.options[randint(0, 4)]
-    
-        def learning(self):
-            random = randint(0, 1)
-            if self.tied[0]:
-                return self.rules[self.tied[1]][2][random]
-            return self.rules[highest(self.played)][2][random]
-    
-        def counter(self):
-            counter_counters = {
-                'rock': 'lizard',
-                'paper': 'rock',
-                'scissors': 'paper',
-                'spock': 'scissors',
-                'lizard': 'spock',
-                }
-            return counter_counters[highest(self.played)]
-    
-        def select(self, TYPE):
-            if TYPE == 'random':
-                return AI.random(self)
-            elif TYPE == 'learning':
-                return AI.learning(self)
-            elif TYPE == 'counter':
-                return AI.counter(self)
-         
-    def initialize_AI(TYPE, rules, options):
-        played = {
-        'lizard': 0,
-        'spock': 0,
-        'paper': 0,
-        'scissors': 0,
-        'rock': 0
-        }
-        tied = (False, '')
-        return AI(TYPE, rules, options, played, tied)
-            
-    class reset_score:            
-        def __init__(self, human=0, computer=0, ties=0):
-            self.human = human
-            self.computer = computer
-            self.ties = ties
-            
-        def total(self):
-            return self.human + self.computer + self.ties
-        
     def game(TYPE, options):
-        
-        def occurrences(sequence, find):
-                for index, element in enumerate(sequence):
-                    if element == find:
-                        return False, index
-                return True, None
-                
         quits = ['exit', 'stop']
         rules = {
             # 'option': (['things it beats'], ['attack'], ['it loses to'])
@@ -120,14 +53,77 @@ def main():
                 score.human += 1
             ai.played[human] += 1
             print (' ')
+
+    def initialize_AI(TYPE, rules, options):
+        played = {
+        'lizard': 0,
+        'spock': 0,
+        'paper': 0,
+        'scissors': 0,
+        'rock': 0
+        }
+        tied = (False, '')
+        return AI(TYPE, rules, options, played, tied)
+
+    class AI:
+        def __init__(self, TYPE='', rules={}, options=[], played={}, tied=()):
+            self.TYPE = TYPE
+            self.rules = rules
+            self.options = options
+            self.played = played
+            self.tied = tied
+        
+        def random(self):
+            return self.options[randint(0, 4)]
+    
+        def learning(self):
+            random = randint(0, 1)
+            if self.tied[0]:
+                return self.rules[self.tied[1]][2][random]
+            return self.rules[highest(self.played)][2][random]
+    
+        def counter(self):
+            counter_counters = {
+                'rock': 'lizard',
+                'paper': 'rock',
+                'scissors': 'paper',
+                'spock': 'scissors',
+                'lizard': 'spock',
+                }
+            return counter_counters[highest(self.played)]
+    
+        def select(self, TYPE):
+            if TYPE == 'random':
+                return AI.random(self)
+            elif TYPE == 'learning':
+                return AI.learning(self)
+            elif TYPE == 'counter':
+                return AI.counter(self)
+
+    def occurrences(sequence, find):
+        for index, element in enumerate(sequence):
+            if element == find:
+                return False, index
+        return True, None
+
+    def highest(dictonary):
+        return max(dictonary, key=lambda x: x[0])
+            
+    class reset_score:            
+        def __init__(self, human=0, computer=0, ties=0):
+            self.human = human
+            self.computer = computer
+            self.ties = ties
+            
+        def total(self):
+            return self.human + self.computer + self.ties
+        
+    def percent(numerator):
+        percent = numerator / score.total() * 100
+        DECIMAL_PLACES = 2
+        return str(round(percent, DECIMAL_PLACES)) + '%'
         
     def scoreboard(TYPE):
-        
-        def percent(numerator):
-            percent = numerator / score.total() * 100
-            DECIMAL_PLACES = 2
-            return str(round(percent, DECIMAL_PLACES)) + '%'
-
         banner = '~~~~~~~~FINAL~SCORE~~~~~~~~'
         print (banner)
         print ('TIES:', score.ties, percent(score.ties), sep=' ')
