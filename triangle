@@ -1,0 +1,73 @@
+"SETUP SCREEN"
+ClrDraw
+Full
+AxesOff
+GridOFf
+0→Xmin
+94→Xmax
+0→Ymin
+62→Ymax
+
+"VARIABLES"
+" "→Str1
+"-"→Str2
+[[0,0,0][0,0,0][0,0,0]→[J]
+[[1,10][60,20][30,20]]→[D]
+0→K
+0→X
+0→Y
+1→T
+3→A
+3→S
+
+"DISPLAY"
+Text(0,51,"SIDE")
+Text(0,75,"ANGLE")
+Vertical 72
+
+"MAIN LOOP"
+While A+S≠0
+
+"PRINT VALUES"
+56→B
+For(J,1,2,1)
+8→C
+For(I,1,3,1)
+If [J](J,I)=0
+Then
+Text(C,B,Str2)
+Else
+Text(C,B,[J](J,I))
+End
+C+6→C
+End
+B+24→B
+End
+
+"MAP INPUT"
+6→C
+53→X
+51→Y
+While K≠105
+
+"TRIANGLE"
+Pt-On([D](1,1),[D](1,2),2)
+Line([D](1,1),[D](1,2),[D](2,1),[D](2,2))
+Pt-On([D](2,1),[D](2,2),2)
+Line([D](2,1),[D](2,2),[D](3,1),[D](3,2))
+Pt-On([D](3,1),[D](3,2),2)
+Line([D](3,1),[D](3,2),[D](1,1),[D](1,2))
+
+"NUMBER PAD"
+getKey→K
+If K=103
+Str1+"."→Str1
+If K=102
+Str1+"0"→Str1
+If K=92
+Str1+"1"→Str1
+If K=93
+Str1+"2"→Str1
+If K=94
+Str1+"3"→Str1
+
