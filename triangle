@@ -70,4 +70,101 @@ If K=93
 Str1+"2"→Str1
 If K=94
 Str1+"3"→Str1
+If K=82
+Str1+"4"→Str1
+If K=83
+Str1+"5"→Str1
+If K=84
+Str1+"6"→Str1
+If K=72
+Str1+"7"→Str1
+If K=73
+Str1+"8"→Str1
+If K=74
+Str1+"9"→Str1
+
+"CLEAR CURSOR"
+If K=25 or K=34 or K=24 or K=26
+Then
+If X=53
+Then
+51→M
+Else
+75→M
+End
+For(R,37,53)
+Line(M,R,M+2,R,0)
+End
+End
+
+"D PAD"
+If K=25
+Then
+Y+C→Y
+T+1→T
+End
+If K=34
+Then
+Y-C→Y
+T-1→T
+End
+If K=24
+X-24→X
+If K=26
+x+24→X
+
+"OVER/UNDER"
+If Y>53
+Then
+39→Y
+1→T
+End
+If Y<39
+Then
+51→Y
+3→T
+End
+
+"CURSOR"
+Pt-On(X-2,Y+2)
+Line(X-2,Y+1,X-1,Y+1)
+Line(x-2,Y,X,Y)
+Line(X-2,Y-1,X-1,Y-1)
+Pt-On(X-2,Y-2)
+
+"INPUT"
+INSERT CHANGE TO NUMBER
+Text(abs(X-62)-1,abs(Y-94)+12,Str1)
+
+"BLINK SIDE"
+If X=53
+Then
+If T=1
+Line([D](1,1),[D](1,2),[D](2,1),[D](2,2),0)
+If T=2
+Line([D](2,1),[D](2,2),[D](3,1),[D](3,2),0)
+If T=3
+Line([D](3,1),[D](3,2),[D](1,1),[D](1,2),0)
+End
+
+"BLINK ANGLE"
+If X=77
+Then
+If T=1
+Pt-Off([D](3,1),[D](3,2),2)
+If T=2
+Pt-Off([D](1,1),[D](1,2),2)
+If T=3
+Pt-Off([D](2,1),[D](2,2),2)
+End
+
+End
+
+"STR TO NUM"
+sub(Str1,1,length(Str1))→Str1
+expr(Str1)→N
+End
+
+
+
 
