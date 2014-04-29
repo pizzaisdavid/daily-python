@@ -1,5 +1,5 @@
 def main():
-    triangle = triangle()
+    triangle = Triangle()
     print (triangle.a)
   
 class Triangle:
@@ -10,3 +10,5 @@ class Triangle:
         self.A = A
         self.B = B
         self.C = C
+
+main()
