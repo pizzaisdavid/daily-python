@@ -25,10 +25,8 @@ Text(0,51,"SIDE")
 Text(0,75,"ANGLE")
 Vertical 72
 
-"MAIN LOOP"
-While A+S≠0
-
 "PRINT VALUES"
+Lbl 001
 56→B
 For(J,1,2,1)
 8→C
@@ -43,6 +41,9 @@ C+6→C
 End
 B+24→B
 End
+
+"MAIN LOOP"
+While A+S≠0
 
 "MAP INPUT"
 6→C
@@ -84,18 +85,7 @@ If K=74
 Str1+"9"→Str1
 
 "CLEAR CURSOR"
-If K=25 or K=34 or K=24 or K=26
-Then
-If X=53
-Then
-51→M
-Else
-75→M
-End
-For(R,37,53)
-Line(M,R,M+2,R,0)
-End
-End
+# USE 'T' TO BE MORE EFFICENT.
 
 "D PAD"
 If K=25
@@ -145,11 +135,9 @@ If T=2
 Line([D](2,1),[D](2,2),[D](3,1),[D](3,2),0)
 If T=3
 Line([D](3,1),[D](3,2),[D](1,1),[D](1,2),0)
-End
+Else
 
 "BLINK ANGLE"
-If X=77
-Then
 If T=1
 Pt-Off([D](3,1),[D](3,2),2)
 If T=2
