@@ -164,7 +164,3 @@ End
 sub(Str1,1,length(Str1))→Str1
 expr(Str1)→N
 End
-
-
-
-
