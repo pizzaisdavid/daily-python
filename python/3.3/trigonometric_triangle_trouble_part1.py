@@ -4,11 +4,7 @@ def main():
   
 class Triangle:
     __init__(self, *args):
-        self.a = a
-        self.b = b
-        self.c = c
-        self.A = A
-        self.B = B
-        self.C = C
+        self.sides = [a, b, c]
+        self.angles = [A, B, C]
 
 main()
