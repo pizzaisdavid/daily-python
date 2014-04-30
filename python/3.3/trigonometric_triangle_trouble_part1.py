@@ -4,9 +4,9 @@ def main():
     
     while triangle.is_solved == False:
         if triangle.unknown_side_count == 1:
-            pythagorean_theorem()
+            pythagorean_theorem(triangle.sides)
         elif triangle.unknown_side_count == 1:
-            solve_for_an_angle(triangle.angle)
+            solve_for_an_angle(triangle.angles)
             
 class Triangle:
     def __init__(self, *args):
@@ -15,13 +15,17 @@ class Triangle:
         self.is_solved = False
 
 def pythagorean_theorem(sides):
-    square_root = math.sqrt()
     OPEN = 0
-    if sides[2] == OPEN:
-        sides[2] = square_root(side[0]**2 + side[1]**2)
-    elif:
-
-    return sides
+    adjacent = sides[0]
+    opposite = sides[1]
+    hypotenuse = sides[2]
+    if hypotenuse == OPEN:
+        hypotenuse = math.sqrt(adjacent**2 + opposite**2)
+    elif adjacent == OPEN:
+        adjacent = math.sqrt(hypotenuse**2 - opposite**2)
+    else:
+        opposite = math.sqrt(hypotenuse**2 - adjacent**2)
+    return [adjacent, opposite, hypotenuse]
         
 def solve_for_an_angle(angles):
     OPEN = 0
