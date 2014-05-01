@@ -16,14 +16,14 @@ class Triangle:
 
 def pythagorean_theorem(sides):
     OPEN = 0
-    adjacent, opposite, hypotenuse = sides
+    side1, side2, hypotenuse = sides
     if hypotenuse == OPEN:
-        hypotenuse = sqrt(adjacent**2 + opposite**2)
-    elif adjacent == OPEN:
-        adjacent = sqrt(hypotenuse**2 - opposite**2)
+        hypotenuse = sqrt(side1**2 + side2**2)
+    elif side1 == OPEN:
+        side1 = sqrt(hypotenuse**2 - side2**2)
     else:
-        opposite = sqrt(hypotenuse**2 - adjacent**2)
-    return [adjacent, opposite, hypotenuse]
+        side2 = sqrt(hypotenuse**2 - side1**2)
+    return [side1, side2, hypotenuse]
         
 def solve_for_an_angle(angles):
     OPEN = 0
