@@ -17,8 +17,8 @@ class Triangle:
     def __init__(self, a=0, b=0, c=0, A=0, B=0, C=0):
         self.sides = [a, b, c]
         self.angles = [A, B, C]
-        self.unknown_side_count = number_of_occurrences(self.sides)
-        self.unknown_angle_count = number_of_occurrences(self.angles)
+        self.unknown_side_count = number_of_unknown(self.sides)
+        self.unknown_angle_count = number_of_unknown(self.angles)
     
     def is_solved(self):
         UNKKNOWN = 0
@@ -29,8 +29,9 @@ class Triangle:
         except ValueError:
             return True
 
-def number_of_occurrences(sequence, find=0):
-     return len([i for i, x in enumerate(sequence) if x == find])
+def number_of_unknown(sequence):
+    UNKNOWN = 0
+    return len([i for i, x in enumerate(sequence) if x == UNKOWN])
 
 def pythagorean_theorem(sides):
     side1, side2, hypotenuse = sides
