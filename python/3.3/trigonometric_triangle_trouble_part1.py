@@ -1,24 +1,19 @@
-from math import sqrt
-"""
-ADD
--SAS
--ASA
-"""
+from math import sqrt, asin, acos, sin, cos, pi
+
 def main():
-    triangle = Triangle(a=3, b=4)
+    triangle = Triangle(a=3, b=4, C=90)
     while triangle.is_solved() == False:
-        if triangle.unknown_side_count == 1:
-            triangle.sides = pythagorean_theorem(triangle.sides)
-        #elif triangle.is_unknown_side_count == 1:
-        #    triangle.angles = solve_for_an_angle(triangle.angles)
+        triangle = law_of_sines(triangle)
+        triangle.sides = pythagorean_theorem(triangle.sides)
+        triangle.angles = solve_for_an_angle(triangle.angles)
     return triangle.sides
             
 class Triangle:
     def __init__(self, a=0, b=0, c=0, A=0, B=0, C=0):
         self.sides = [a, b, c]
         self.angles = [A, B, C]
-        self.unknown_side_count = number_of_unknown(self.sides)
-        self.unknown_angle_count = number_of_unknown(self.angles)
+        self.side_count = len(undefined_occurrences(self.sides))
+        self.angle_count = len(undefined_occurrences(self.angles))
     
     def is_solved(self):
         UNKKNOWN = 0
@@ -29,9 +24,8 @@ class Triangle:
         except ValueError:
             return True
 
-def number_of_unknown(sequence):
-    UNKNOWN = 0
-    return len([i for i, x in enumerate(sequence) if x == UNKOWN])
+def undefined_occurrences(sequence, find=0):
+     return [i for i, x in enumerate(sequence) if x == find]
 
 def pythagorean_theorem(sides):
     side1, side2, hypotenuse = sides
@@ -64,5 +58,43 @@ def solve_for_an_angle(angles):
     for angle in angles:
         found_angle -= angle
     return insert_value(angles, found_angle)
+
+def law_of_sines(triangle):
+    angles = triangle.angles
+    sides = triangle.sides
+    angle_indices = undefined_occurrences(angles)
+    side_indices = undefined_occurrences(sides)
+    if len(angle_indices):
+        angles = two_sides_and_angle(sides, angles, angle_indices, side_indices)
+    #else:
+    #    sides[]
+        
+
+def two_angles_and_side(sides, angles, angle_indices, side_indices):
+    """Given two angles and a side, finds a second side."""
+    i = side_indices
+    unknown_index = other(angle_indices, i)
+    #found = 
+
+def two_sides_and_angle(sides, angles, angle_indices, side_indices):
+    """Given two sides and an angle, finds a second angle."""
+    i = angle_indices[0]
+    unknown_index = other(side_indices, i)
+    found = asin((sides[i] * sin(angles[unknown_index])) / sides[i])
+    angles[unknown_index] = found
+    return angles
+
+def _sin(radians):
+    """Radains to degrees"""
+    return 180 * sin(radians) / pi
+
+def other(sequence, find):
+    for item in sequence:
+        if item != find:
+            return item
+
+
+
+
     
-print main()
+print _sin(90)
