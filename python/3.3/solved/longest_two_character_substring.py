@@ -31,7 +31,7 @@ def unique_combinations(sequence):
 	return unique
 
 def occurrences(sequence, find):
-	'''Returns a list of substrings that are made of find.'''
+	'''Returns a list of substrings that are made of find'''
 	substrings = []
 	substring = ''
 	for item in sequence:
