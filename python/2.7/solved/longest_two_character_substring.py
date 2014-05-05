@@ -5,18 +5,13 @@ def longest_two_character_substring(string):
         substrings.extend(occurrences(string, letters))
     print max(substrings, key = len)
     
-def occurrences(sequence, find):
-	substrings = []
-	substring = ''
+def occurrences(sequence, find):substrings = ['']
 	for item in sequence:
 		if item in find:
-			substring += item
+			substrings[-1] += item
 		else:
-			substrings.append(substring)
-			substring = ''
-	substrings.append(substring)
+			substrings.append('')
 	return substrings
-
 longest_two_character_substring('abbxcccc')
 longest_two_character_substring('abcabcabcabccc')
 longest_two_character_substring('qwertyytrewq')
