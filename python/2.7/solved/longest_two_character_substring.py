@@ -12,6 +12,7 @@ def occurrences(sequence, find):substrings = ['']
 		else:
 			substrings.append('')
 	return substrings
+	
 longest_two_character_substring('abbxcccc')
 longest_two_character_substring('abcabcabcabccc')
 longest_two_character_substring('qwertyytrewq')
