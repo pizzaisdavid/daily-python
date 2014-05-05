@@ -6,7 +6,7 @@ def longest_two_character_substring(string):
     print max(substrings, key = len)
     
 def occurrences(sequence, find):
-s	ubstrings = ['']
+	substrings = ['']
 	for item in sequence:
 		if item in find:
 			substrings[-1] += item
