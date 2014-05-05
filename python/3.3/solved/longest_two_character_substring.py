@@ -32,15 +32,11 @@ def unique_combinations(sequence):
 
 def occurrences(sequence, find):
 	'''Returns a list of substrings that are made of find.'''
-	substrings = []
-	substring = ''
+	substrings = ['']
 	for item in sequence:
 		if item in find:
-			substring += item
+			substrings[-1] += item
 		else:
-			substrings.append(substring)
-			substring = ''
-	substrings.append(substring)
+			substrings.append('')
 	return substrings
-
 longest_two_character_substring('abbxcccc')
