@@ -1,16 +1,10 @@
 from random import randint
-def black_jack(number_of_decks):
-	score = deal(initialize_deck(number_of_decks))
-	total = score.wins + score.loses
-	print 'After', total, 'hands there was', score.wins, 'at', percent(score.wins, total)
 
-def deal(deck):
-	score = reset_count()
-	while deck:
-		hand = deck.pop(random(deck)) + deck.pop(random(deck))
-		hand, deck = hit_me_again(hand, deck)
-		score = check(hand, score)
-	return score
+def black_jack(number_of_decks):
+	deck = shuffle(initialize_deck(number_of_decks))
+	wins, loses = deal(deck)
+	total = wins + loses
+	print 'After', total, 'hands there was', wins, 'at', percent(wins, total)
 
 def initialize_deck(number_of_decks):
 	cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
@@ -20,31 +14,34 @@ def initialize_deck(number_of_decks):
 def shuffle(deck):
 	length = len(deck)
 	for count in range(length):
-		index = randint(0, length)
+		index = randint(0, length - 1)
 		card = deck.pop(index)
 		deck.append(card)
 	return deck
 
-class reset_count:
-	def __init__(self, wins=0, loses=0):
-		self.wins = wins
-		self.loses = loses
+def deal(deck):
+	wins = 0
+	loses = 0
+	while deck:
+		try:
+			hand = deck.pop() + deck.pop()
+			hand, deck = hit_me_again(hand, deck)
+			wins, loses = score(hand, wins, loses)
+		except IndexError:
+			break
+	return wins, loses
 
-def random(sequence):
-	return randint(0, len(sequence) - 1)
-
-def check(value, score):
+def score(value, wins, loses):
 	WINNER = 21
 	if value == WINNER:
-		score.wins += 1
-	else:
-		score.loses += 1
-	return score
+		return wins + 1, loses
+	return wins, loses + 1
 
 def hit_me_again(hand, deck):
 	LIMIT = 11
-	if deck and hand <= LIMIT:
-		hand += deck.pop(random(deck))
+	if deck:
+		if hand <= LIMIT:
+			hand += deck.pop()
 	return hand, deck
 
 def percent(numerator, denominator):
