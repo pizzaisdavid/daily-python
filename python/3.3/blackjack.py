@@ -17,6 +17,14 @@ def initialize_deck(number_of_decks):
 	NUMBER_OF_SUITS = 4
 	return cards * NUMBER_OF_SUITS * number_of_decks
 
+def shuffle(deck):
+	length = len(deck)
+	for count in range(length):
+		index = randint(0, length)
+		card = deck.pop(index)
+		deck.append(card)
+	return deck
+
 class reset_count:
 	def __init__(self, wins=0, loses=0):
 		self.wins = wins
