@@ -37,3 +37,4 @@ def build_call(network, call):
 	start, end = call
 
 phone_network('phone_network.txt')
+d
