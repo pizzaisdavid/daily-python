@@ -8,7 +8,8 @@ def black_jack(number_of_decks):
         try:
             hand = deck.pop() + deck.pop()
             hand, deck = hit_me_again(hand, deck)
-            wins, total = score(hand) + wins, total + 1
+            wins += score(hand)
+            total += 1
         except IndexError:
             break
     print_output(wins, total)
