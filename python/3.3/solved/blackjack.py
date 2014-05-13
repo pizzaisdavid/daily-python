@@ -1,6 +1,7 @@
 from random import randint
 
 def black_jack(number_of_decks):
+    WINNER == 21
     deck = create_and_shuffle_deck(number_of_decks)
     wins = 0
     total = 0
@@ -8,7 +9,8 @@ def black_jack(number_of_decks):
         try:
             hand = deck.pop() + deck.pop()
             hand, deck = hit_me_again(hand, deck)
-            wins, total = score(hand, wins, total)
+            wins += score(hand)
+            total += 1
         except IndexError:
             break
     print_output(wins, total)
@@ -31,11 +33,11 @@ def hit_me_again(hand, deck):
         hand += deck.pop()
     return hand, deck
 
-def score(value, wins, total):
+def score(value):
     WINNER = 21
     if value == WINNER:
-        wins += 1
-    return wins, total + 1
+        return 1
+    return 0
 
 def print_output(wins, total):
     DECIMAL_PLACES = 2
