@@ -5,8 +5,7 @@ def black_jack(number_of_decks):
     wins, total = 0, 0
     while deck:
         try:
-            hand = deck.pop() + deck.pop()
-            hand, deck = hit_me_again(hand, deck)
+            hand, deck = hit(deck, hand=deck.pop() + deck.pop())
             wins, total = wins + score(hand), total + 1
         except IndexError:
             break
@@ -24,7 +23,7 @@ def shuffle(deck):
         deck.append(random_card)
     return deck
 
-def hit_me_again(hand, deck):
+def hit(deck, hand):
     LIMIT = 11
     if deck and hand <= LIMIT:
         hand += deck.pop()
@@ -38,7 +37,7 @@ def score(value):
 
 def print_output(wins, total):
     DECIMAL_PLACE = 2
-    percent = str(round(wins / float(total) * 100, DECIMAL_PLACE)) + '%'
-    print 'After', total, 'hands there was', wins, 'at', percent
+    percent = str(round(wins / float(total) * 100, DECIMAL_PLACE))
+    print 'After', total, 'hands there was', wins, 'at', percent + '%'
 
 black_jack(2)
