@@ -1,4 +1,4 @@
-from random import randint
+from random import randrange
 
 def black_jack(number_of_decks):
     deck = create_and_shuffle_deck(number_of_decks)
@@ -20,7 +20,7 @@ def create_and_shuffle_deck(number_of_decks):
 def shuffle(deck):
     LENGTH = len(deck)
     for count in range(LENGTH):
-        random_card = deck.pop(randint(0, length - 1))
+        random_card = deck.pop(randrange(LENGTH))
         deck.append(random_card)
     return deck
 
