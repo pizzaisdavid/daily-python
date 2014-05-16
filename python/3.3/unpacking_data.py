@@ -1,57 +1,64 @@
-import sys
-
 def decompress(filename):
-    KEY, compress = parse_input(filename)
+    KEYWORDS, compress = parse_input(filename)
     for physical_line in compress:
-        translate(KEY, physical_line)
+        translate(KEYWORDS, physical_line)
 
 def parse_input(filename):
-    KEY = ['is', 'my', 'hello', 'name', 'stan']
+    KEYWORDS = ['is', 'my', 'hello', 'name', 'stan']
     compress = [['2!', '!', 'R', '1^', '3', '0', '4^', '.', 'E']]
-    return KEY, compress
+    return KEYWORDS, compress
 
-def translate(KEY, physical_line):
+def translate(KEYWORDS, physical_line):
     string = ''
     for chunk in physical_line:
-        if has_modifier(chunk):
-            string += chunk_has_modifier(KEY, chunk)
-        elif is_symbol(chunk):
-            string = add_symbol(string, chunk)
-        elif is_key(KEY, chunk):
-            string += add_key(KEY, chunk)
-        else:
+        string = convert(KEYWORDS, chunk, string)
+        if is_linebreak(chunk):
             print (string)
             string = ''
-            continue
-        string += ' '
 
-def has_modifier(string):
+def convert(KEYWORDS, chunk, string):
+    if has_modifier(chunk):
+        string += chunk_has_modifier(KEYWORDS, chunk)
+    elif is_keyword(chunk):
+        string += add_keyword(KEYWORDS, chunk)
+    elif is_symbol(chunk):
+        string = add_symbol(string, chunk)
+    return string + ' '
+
+def has_modifier(possibly_contains_modifier):
     HAS_MODIFIER = 2
-    return len(string) == HAS_MODIFIER
+    return len(possibly_contains_modifier) is HAS_MODIFIER
 
-def is_symbol(string):
-    SYMBOLS = '?!;:,.'
-    return string in SYMBOLS
-
-def add_symbol(string, symbol):
-    return string[:-1] + symbol
-
-def is_key(KEY, string):
-    indices = [str(x) for x in list(range(len(KEY)))]
-    return string in indices
-
-def add_key(KEY, index):
-    return KEY[int(index)]
-
-def chunk_has_modifier(KEY, command):
-    CAPS_LOCK = '!'
-    CAPITALISED = '^'
+def chunk_has_modifier(KEYWORDS, command):
+    CAPS_LOCK, CAPITALISED = '!', '^'
     index, modifier = command
-    string = KEY[int(index)]
+    string = add_keyword(KEYWORDS, index)
     if modifier is CAPS_LOCK:
         return string.upper()
     elif modifier is CAPITALISED:
         return string[0].upper() + string[1:]
+
+def is_symbol(possible_symbol):
+    SYMBOLS = '?!;:,.'
+    return possible_symbol in SYMBOLS
+
+def add_symbol(string, symbol):
+    return string[:-1] + symbol
+
+def is_keyword(possible_keyword):
+    try:
+        int(possible_keyword)
+        return True
+    except ValueError:
+        return False
+
+def add_keyword(KEYWORDS, index):
+    return KEYWORDS[int(index)]
+
+def is_linebreak(possible_linebreak):
+    LINEBREAK = 'ER'
+    return possible_linebreak in LINEBREAK
+
 
 decompress('compression.txt')
 
