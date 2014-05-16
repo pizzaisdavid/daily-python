@@ -4,16 +4,24 @@ def decompress(filename):
         translate(KEYWORDS, physical_line)
 
 def parse_input(filename):
-    KEYWORDS = ['is', 'my', 'hello', 'name', 'stan']
-    compress = [['2!', '!', 'R', '1^', '3', '0', '4^', '.', 'E']]
-    return KEYWORDS, compress
+    KEYWORDS, compress = [], []
+    key = 'KEYWORDS'
+    for line in open(filename).readlines():
+        if line.split() == []:
+            key = 'compress'
+            continue
+        if key is 'KEYWORDS':
+            KEYWORDS.append(line.rstrip())
+        else:
+            compress.append(line.rstrip().split(' '))
+    return KEYWORDS[1:], compress
 
 def translate(KEYWORDS, physical_line):
     string = ''
     for chunk in physical_line:
         string = convert(KEYWORDS, chunk, string)
         if is_linebreak(chunk):
-            print (string)
+            print (string.replace('- ', '-'))
             string = ''
 
 def convert(KEYWORDS, chunk, string):
@@ -26,20 +34,31 @@ def convert(KEYWORDS, chunk, string):
     return string + ' '
 
 def has_modifier(possibly_contains_modifier):
-    HAS_MODIFIER = 2
-    return len(possibly_contains_modifier) is HAS_MODIFIER
+    MODIFIER = ['!', '^']
+    for character in possibly_contains_modifier:
+        if character in MODIFIER:
+            return True
+    return False
 
 def chunk_has_modifier(KEYWORDS, command):
     CAPS_LOCK, CAPITALISED = '!', '^'
-    index, modifier = command
+    index, modifier = unpack(command)
     string = add_keyword(KEYWORDS, index)
     if modifier is CAPS_LOCK:
         return string.upper()
     elif modifier is CAPITALISED:
         return string[0].upper() + string[1:]
+    else:
+        return ''
+
+def unpack(command):
+    MODIFIER = ['!', '^']
+    for index, character in enumerate(command):
+        if character in MODIFIER:
+            return int(command[:index]), command[index]
 
 def is_symbol(possible_symbol):
-    SYMBOLS = '?!;:,.'
+    SYMBOLS = '?!;:,.-'
     return possible_symbol in SYMBOLS
 
 def add_symbol(string, symbol):
@@ -58,7 +77,6 @@ def add_keyword(KEYWORDS, index):
 def is_linebreak(possible_linebreak):
     LINEBREAK = 'ER'
     return possible_linebreak in LINEBREAK
-
 
 decompress('compression.txt')
 
