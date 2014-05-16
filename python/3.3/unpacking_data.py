@@ -1,38 +1,57 @@
+import sys
+
 def decompress(filename):
-    key, compress = parse_input(filename)
+    KEY, compress = parse_input(filename)
     for physical_line in compress:
-        translate(key, physical_line)
+        translate(KEY, physical_line)
 
 def parse_input(filename):
-    key = ['is', 'my', 'hello', 'name', 'stan']
+    KEY = ['is', 'my', 'hello', 'name', 'stan']
     compress = [['2!', '!', 'R', '1^', '3', '0', '4^', '.', 'E']]
-    return key, compress
+    return KEY, compress
 
-def translate(key, physical_line):
-    SYMBOLS = '?!;:,.'
-    indices = map(str, range(len(key)))
-    phrase = ''
+def translate(KEY, physical_line):
+    string = ''
     for chunk in physical_line:
-        if len(chunk) == 2:
-            phrase += chunk_has_modifier(key, chunk)
-        elif chunk in indices:
-            phrase += key[int(chunk)]
-        elif chunk in SYMBOLS:
-            phrase = phrase[:-1] + chunk
+        if has_modifier(chunk):
+            string += chunk_has_modifier(KEY, chunk)
+        elif is_symbol(chunk):
+            string = add_symbol(string, chunk)
+        elif is_key(KEY, chunk):
+            string += add_key(KEY, chunk)
         else:
-            print phrase
-            phrase = ''
+            print (string)
+            string = ''
             continue
-        phrase += ' '
+        string += ' '
 
-def chunk_has_modifier(key, command):
-    UPPERCASE = '!'
+def has_modifier(string):
+    HAS_MODIFIER = 2
+    return len(string) == HAS_MODIFIER
+
+def is_symbol(string):
+    SYMBOLS = '?!;:,.'
+    return string in SYMBOLS
+
+def add_symbol(string, symbol):
+    return string[:-1] + symbol
+
+def is_key(KEY, string):
+    indices = [str(x) for x in list(range(len(KEY)))]
+    return string in indices
+
+def add_key(KEY, index):
+    return KEY[int(index)]
+
+def chunk_has_modifier(KEY, command):
+    CAPS_LOCK = '!'
     CAPITALISED = '^'
     index, modifier = command
-    string = key[int(index)]
-    if modifier is UPPERCASE:
+    string = KEY[int(index)]
+    if modifier is CAPS_LOCK:
         return string.upper()
     elif modifier is CAPITALISED:
         return string[0].upper() + string[1:]
 
 decompress('compression.txt')
+
