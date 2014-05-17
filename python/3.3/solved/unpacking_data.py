@@ -5,9 +5,10 @@ def decompress(filename):
 
 def parse_input(filename):
     lines = map(lambda x: x.strip(), open(filename).readlines())
-    INDEX_KEYWORDS_END = int(lines[0]) + 1
-    KEYWORDS = lines[1: INDEX_KEYWORDS_END]
-    compress = format_compress(lines[INDEX_KEYWORDS_END:])
+    INDEX_OF_KEYWORD_COUNT = 0
+    KEYWORDS_END = int(lines[INDEX_OF_KEYWORD_COUNT]) + 1
+    KEYWORDS = lines[1: KEYWORDS_END]
+    compress = format_compress(lines[KEYWORDS_END:])
     return KEYWORDS, compress
 
 def format_compress(lines):
@@ -39,14 +40,14 @@ def has_modifier(possibly_contains_modifier):
 
 def add_keyword_with_modifier(KEYWORDS, command):
     CAPS_LOCK, CAPITALISED = '!', '^'
+    FIRST_LETTER = 0
     index, modifier = unpack(command)
-    string = add_keyword(KEYWORDS, index)
+    keyword = add_keyword(KEYWORDS, index)
     if modifier is CAPS_LOCK:
-        return string.upper()
+        return keyword.upper()
     elif modifier is CAPITALISED:
-        return string[0].upper() + string[1:]
-    else:
-        return ''
+        return keyword[FIRST_LETTER].upper() + keyword[1:]
+    return ''
 
 def unpack(command):
     MODIFIER = ['!', '^']
@@ -58,8 +59,9 @@ def is_symbol(possible_symbol):
     SYMBOLS = '?!;:,.-'
     return possible_symbol in SYMBOLS
 
-def add_symbol(string, symbol):
-    return string[:-1] + symbol
+def add_symbol(phrase, symbol):
+    SUBTRACTS_ONE_CHARACTER = -1
+    return phrase[:SUBTRACTS_ONE_CHARACTER] + symbol
 
 def is_keyword(possible_keyword):
     try:
