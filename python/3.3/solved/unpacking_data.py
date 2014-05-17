@@ -20,9 +20,6 @@ def translate(KEYWORDS, physical_line):
     string = ''
     for chunk in physical_line:
         string = convert(KEYWORDS, chunk, string)
-        if is_linebreak(chunk):
-            print (string.replace('- ', '-'))
-            string = ''
 
 def convert(KEYWORDS, chunk, string):
     if has_modifier(chunk):
@@ -31,6 +28,9 @@ def convert(KEYWORDS, chunk, string):
         string += add_keyword(KEYWORDS, chunk)
     elif is_symbol(chunk):
         string = add_symbol(string, chunk)
+    elif is_linebreak(chunk):
+        print (string.replace('- ', '-'))
+        return  ''
     return string + ' '
 
 def has_modifier(possibly_contains_modifier):
