@@ -2,19 +2,19 @@ from random import randrange
 
 def black_jack(number_of_decks):
     deck = create_and_shuffle_deck(number_of_decks)
-    wins, total = 0, 0
+    score = Score()
     while deck:
-        try:
-            hand, deck = hit(deck, hand=deck.pop() + deck.pop())
-            wins, total = wins + score(hand), total + 1
-        except IndexError:
-            break
-    print_output(wins, total)
+        deck, hand = deal(deck)
+        score.check(hand)
+    print_output(score)
 
 def create_and_shuffle_deck(number_of_decks):
+    return shuffle(create_deck(number_of_decks))
+
+def create_deck(number_of_decks):
     CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
     NUMBER_OF_SUITS = 4
-    return shuffle(CARDS * NUMBER_OF_SUITS * number_of_decks)
+    return CARDS * NUMBER_OF_SUITS * number_of_decks
 
 def shuffle(deck):
     LENGTH = len(deck)
@@ -23,20 +23,38 @@ def shuffle(deck):
         deck.append(random_card)
     return deck
 
+class Score:
+    def __init__(self, wins=0, total=0):
+        self.wins = wins
+        self.total = total
+
+    def check(self, hand):
+        INCREMENT = 1
+        WINNING_SCORE = 21
+        if hand is None:
+            pass
+        elif hand is WINNING_SCORE:
+            self.wins += INCREMENT
+        self.total += INCREMENT
+
+def deal(deck):
+    try:
+        deck, hand = hit(deck, hand=deck.pop() + deck.pop())
+        return deck, hand
+    except IndexError:
+        return None, None
+
 def hit(deck, hand):
     LIMIT = 11
-    if deck and hand <= LIMIT:
-        hand += deck.pop()
-    return hand, deck
+    if deck:
+        if hand <= LIMIT:
+            hand += deck.pop()
+    return deck, hand
 
-def score(value):
-    WINNER = 21
-    if value == WINNER:
-        return 1
-    return 0
-
-def print_output(wins, total):
+def print_output(score):
     DECIMAL_PLACE = 2
+    wins = score.wins
+    total = score.total
     percent = str(round(wins / float(total) * 100, DECIMAL_PLACE))
     print 'After', total, 'hands there was', wins, 'at', percent + '%'
 
