@@ -52,10 +52,13 @@ def hit(deck, hand):
     return deck, hand
 
 def print_output(score):
-    DECIMAL_PLACE = 2
-    wins = score.wins
-    total = score.total
-    percent = str(round(wins / float(total) * 100, DECIMAL_PLACE))
-    print 'After', total, 'hands there was', wins, 'at', percent + '%'
+    WORDS = 'After {0} hands there was {1} at {2}%'
+    print (WORDS.format(score.total, score.wins, percentage(score)))
 
-black_jack(2)
+def percentage(score):
+    DECIMAL_PLACE = 2
+    CONVERT_TO_PERCENT = 100
+    percent = score.wins / float(score.total) * CONVERT_TO_PERCENT
+    return str(round(percent, DECIMAL_PLACE))
+
+black_jack(1)
