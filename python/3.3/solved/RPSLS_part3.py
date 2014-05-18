@@ -127,10 +127,11 @@ class reset_score:
     def total(self):
         return self.human + self.computer + self.ties
     
-def percent(numerator, denominator):
-    percent = numerator / denominator * 100
-    DECIMAL_PLACES = 2
-    return str(round(percent, DECIMAL_PLACES)) + '%'
+def percentage(wins, total):
+    DECIMAL_PLACE = 2
+    CONVERT_TO_PERCENT = 100
+    percent = wins / float(total) * CONVERT_TO_PERCENT
+    return str(round(percent, DECIMAL_PLACE)) + '%'
     
 def scoreboard(TYPE, score):
     total = score.total()
