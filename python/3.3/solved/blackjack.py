@@ -5,7 +5,7 @@ def black_jack(number_of_decks):
     score = Score()
     deck = dealer.get_deck()
     while deck:
-        score.check(dealer.deal())
+        score.tally(dealer.deal())
     print_final(score)
 
 class Dealer:
@@ -47,7 +47,7 @@ class Score:
         self.wins = wins
         self.total = total
 
-    def check(self, hand):
+    def tally(self, hand):
         INCREMENT = 1
         WINNING_SCORE = 21
         if hand is None:
