@@ -1,7 +1,8 @@
 from random import randrange
 
-def black_jack(number_of_decks):
-    dealer = Dealer(number_of_decks)
+def black_jack():
+    NUMBER_OF_DECKS = 3
+    dealer = Dealer(NUMBER_OF_DECKS)
     score = Score()
     deck = dealer.get_deck()
     while deck:
@@ -9,8 +10,9 @@ def black_jack(number_of_decks):
     print_final(score)
 
 class Dealer:
-    def __init__(self, number_of_decks=1):
-        self.number_of_decks = number_of_decks
+    def __init__(self, NUMBER_OF_DECKS=1):
+        self.NUMBER_OF_DECKS = NUMBER_OF_DECKS
+        self.decks = []
 
     def get_deck(self):
         Dealer.create_deck(self)
@@ -18,29 +20,29 @@ class Dealer:
         return self.deck
 
     def create_deck(self):
-        CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
         NUMBER_OF_SUITS = 4
-        self.deck = CARDS * NUMBER_OF_SUITS * self.number_of_decks
+        CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+        self.deck = CARDS * NUMBER_OF_SUITS * self.NUMBER_OF_DECKS
 
     def shuffle(self):
         LENGTH = len(self.deck)
-        for count in range(LENGTH):
+        for _ in range(LENGTH):
             random_card = self.deck.pop(randrange(LENGTH))
             self.deck.append(random_card)
 
     def deal(self):
         try:
-            self.hand = self.deck.pop() + self.deck.pop()
-            return Dealer.hit(self)
+            hand = self.deck.pop() + self.deck.pop()
+            return Dealer.hit(self, hand)
         except IndexError:
             return None, None
 
-    def hit(self):
+    def hit(self, hand):
         LIMIT = 11
         if self.deck:
-            if self.hand <= LIMIT:
-                self.hand += self.deck.pop()
-        return self.hand
+            if hand <= LIMIT:
+                hand += self.deck.pop()
+        return hand
 
 class Score:
     def __init__(self, wins=0, total=0):
@@ -69,4 +71,4 @@ def percentage(score):
     percent = score.wins / float(score.total) * CONVERT_TO_PERCENT
     return round(percent, DECIMAL_PLACE)
 
-black_jack(2)
+black_jack()
