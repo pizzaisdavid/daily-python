@@ -5,8 +5,8 @@ def black_jack(number_of_decks):
     score = Score()
     deck = dealer.get_deck()
     while deck:
-        score.tally(dealer.deal())
-    print_final(score)
+        score.record(dealer.deal())
+    print_output(score)
 
 class Dealer:
     def __init__(self, number_of_decks=1):
@@ -47,7 +47,7 @@ class Score:
         self.wins = wins
         self.total = total
 
-    def tally(self, hand):
+    def record(self, hand):
         INCREMENT = 1
         WINNING_SCORE = 21
         if hand is None:
@@ -56,7 +56,7 @@ class Score:
             self.wins += INCREMENT
         self.total += INCREMENT
 
-def print_final(score):
+def print_output(score):
     STATISTICS = 'After {0} hands there was {1} at {2}%'
     print (STATISTICS.format(
                         score.total,
