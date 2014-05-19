@@ -4,7 +4,7 @@ def black_jack():
     NUMBER_OF_DECKS = 3
     dealer = Dealer(NUMBER_OF_DECKS)
     score = Score()
-    deck = dealer.get_deck()
+    deck = dealer.get_shuffled_deck()
     while deck:
         score.record(dealer.deal())
     print_final(score)
@@ -14,7 +14,7 @@ class Dealer:
         self.NUMBER_OF_DECKS = NUMBER_OF_DECKS
         self.decks = []
 
-    def get_deck(self):
+    def get_shuffled_deck(self):
         Dealer.create_deck(self)
         Dealer.shuffle(self)
         return self.deck
