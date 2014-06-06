@@ -1,21 +1,46 @@
 from random import randrange
 
-def game(filename):
-    LENGTH, COUNT = introduction()
-    words = Words('words.txt', LENGTH, COUNT)
-    selected_words = words.random
-    guesses_left = 4
-    guess = ''
+def fallot_hacking(filename):
+    words = Words('words.txt')
+    game = Game(words)
+    player = Player()
     words.output()
-    while guesses_left:
-        message = 'You have guesses ' + str(guesses_left) + ' left '
-        guess = get_input(selected_words, message)
-        guesses_left -= 1
-        if guess == words.winner:
-            print('you win')
-            break
-        else:
-            print(get_number_correct(words.winner, guess), '/', LENGTH, 'correct')
+    while player.lives:
+        game.turn(player)
+
+class Words:
+    def __init__(self, filename):
+        self.LENGTH, self.COUNT = introduction()
+        self.filename = filename
+        self.proper_length = Words.get_same_length_words(self)
+        self.group = Words.randomly_select_words(self)
+        self.winner = Words.randomly_select_a_word(self)
+
+    def get_same_length_words(self):
+        words = []
+        lines = open(self.filename).readlines()
+        for word in lines:
+            word = word.strip()
+            if len(word) == self.LENGTH:
+                words.append(word)
+        return words
+
+    def randomly_select_words(self):
+        words = self.proper_length
+        selected = []
+        for i in range(self.COUNT):
+            random_index = randrange(len(words))
+            word = words.pop(random_index)
+            selected.append(word)
+        return selected
+
+    def randomly_select_a_word(self):
+        random_index = randrange(self.COUNT)
+        return self.group[random_index]
+
+    def output(self):
+        for word in self.group:
+            print(word.upper())
 
 def introduction():
     difficulty = ['1', '2', '3', '4', '5']
@@ -36,45 +61,32 @@ def set_difficulty(level):
     COUNT = level ** 2
     return LENGTH, COUNT
 
-class Words:
-    def __init__(self, filename, LENGTH, COUNT):
-        self.filename = filename
-        self.LENGTH = LENGTH
-        self.COUNT = COUNT
-        self.proper_length_words = Words.get_same_length_words(self)
-        self.random = Words.randomly_select_words(self)
-        self.winner = Words.randomly_select_a_word(self)
+class Player:
+    def __init__(self):
+        self.lives = 4
 
-    def get_same_length_words(self):
-        words = []
-        lines = open(self.filename).readlines()
-        for word in lines:
-            word = word.strip()
-            if len(word) == self.LENGTH:
-                words.append(word)
-        return words
+class Game:
+    def __init__(self, words):
+        self.group = words.group
+        self.winner = words.winner
+        self.LENGTH = words.LENGTH
 
-    def randomly_select_words(self):
-        selected = []
-        for i in range(self.COUNT):
-            random_index = randrange(len(self.proper_length_words))
-            selected.append(self.proper_length_words.pop(random_index))
-        return selected
+    def turn(self, player):
+        message = 'You have guesses ' + str(player.lives) + ' left '
+        guess = get_input(self.group, message)
+        if guess == self.winner:
+            player.lives = False
+            print('you win')
+        else:
+            correct = get_number_of_matches(self.winner, guess)
+            print(correct, '/', self.LENGTH, ' correct', sep='')
+            player.lives -= 1
 
-    def randomly_select_a_word(self):
-        random_index = randrange(self.COUNT)
-        return self.random[random_index]
-
-    def output(self):
-        for word in self.random:
-            print(word.upper())
-
-def get_number_correct(word, comparison):
-    word, comparison = word.lower(), comparison.lower()
+def get_number_of_matches(word, comparison):
     count = 0
-    for index, character in enumerate(word):
-        if character == comparison[index]:
+    for letter, character in zip(word, comparison):
+        if letter == character:
             count += 1
     return count
 
-game('words.txt')
+fallot_hacking('words.txt')
