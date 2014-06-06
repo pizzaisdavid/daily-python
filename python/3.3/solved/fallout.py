@@ -1,6 +1,6 @@
 from random import randrange
 
-def fallot_hacking(filename):
+def fallout_hacking(filename):
     words = Words('words.txt')
     game = Game(words)
     player = Player()
@@ -89,4 +89,4 @@ def get_number_of_matches(word, comparison):
             count += 1
     return count
 
-fallot_hacking('words.txt')
+fallout_hacking('words.txt')
