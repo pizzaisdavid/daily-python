@@ -1,16 +1,18 @@
 from random import randrange
 
 def fallout_hacking(filename):
-    words = Words('words.txt')
+    LEGNTH, COUNT = introduction()
+    words = Words('words.txt', LENGTH, COUNT)
     game = Game(words)
     player = Player()
     words.output()
-    while player.lives:
+    while player.has_guesses:
         game.turn(player)
 
 class Words:
-    def __init__(self, filename):
-        self.LENGTH, self.COUNT = introduction()
+    def __init__(self, filename, LENGTH, COUNT):
+        self.LENGTH = LENGTH
+         self.COUNT = COUNT
         self.filename = filename
         self.proper_length = Words.get_same_length_words(self)
         self.group = Words.randomly_select_words(self)
@@ -63,7 +65,7 @@ def set_difficulty(level):
 
 class Player:
     def __init__(self):
-        self.lives = 4
+        self.has_guesses = 4
 
 class Game:
     def __init__(self, words):
@@ -72,15 +74,15 @@ class Game:
         self.LENGTH = words.LENGTH
 
     def turn(self, player):
-        message = 'You have guesses ' + str(player.lives) + ' left '
+        message = 'You have guesses ' + str(player.has_guesses) + ' left '
         guess = get_input(self.group, message)
         if guess == self.winner:
-            player.lives = False
+            player.has_guesses = False
             print('you win')
         else:
             correct = get_number_of_matches(self.winner, guess)
             print(correct, '/', self.LENGTH, ' correct', sep='')
-            player.lives -= 1
+            player.has_guesses -= 1
 
 def get_number_of_matches(word, comparison):
     count = 0
