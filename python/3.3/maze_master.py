@@ -1,100 +1,107 @@
 def maze_master(filename):
     maze = setup(filename)
-    position = Position(maze)
-    labyrinth = Labyrinth(maze)
-    DEAD_END = 'd'
-    EXPLORED = '.'
-    while position.is_in_maze():
-        if labyrinth.is_dead_end(position):
-            labyrinth.mark(position, DEAD_END)
+    player = Player(maze)
+    WALL = '#'
+    DEAD_END = 'B'
+    EXPLORED = '*'
+    UNEXPLORED = ' '
+    EXIT = 'E'
+    while player.is_in_maze():
+        if player.at_dead_end(DEAD_END + WALL):
+            player.mark_as(DEAD_END)
         else:
-            labyrinth.mark(position, EXPLORED)
-        position.move(labyrinth.maze)
-        print(labyrinth.maze)
+            player.mark_as(EXPLORED)
+        player.move(UNEXPLORED, EXPLORED, EXIT)
+    player.print_maze(DEAD_END)
+    print('done')
 
 def setup(filename):
     _, *maze = open(filename)
     grid = []
     for row in maze:
-        grid.append(list(row.strip()))
+        line = list(row.strip())
+        grid.append(line)
     return grid
 
-class Position:
+class Player:
     def __init__(self, maze):
         self.maze = maze
-        self.EXIT = locate(maze, 'E')
-        self.horizontal, self.vertical = locate(maze, 'S')
-        print(self.horizontal, self.vertical)
+        self.horizontal, self.vertical = Player.locate(self, 'S')
+
+    def locate(self, symbol):
+        horizontal, vertical = 0, 0
+        for row in self.maze:
+            horizontal = 0
+            for cell in row:
+                if cell == symbol:
+                    return (horizontal, vertical)
+                horizontal += 1
+            vertical += 1
 
     def is_in_maze(self):
-        return self.EXIT != (self.x, self.y)
+        EXIT = 'E'
+        return self.maze[self.vertical][self.horizontal] != EXIT
 
-    def move(self, maze):
-        Position.get_surrounding(self)
-        UNEXPLORED = ' '
-        EXPLORED = '.'
-        if UNEXPLORED in self.adjacent:
-            Position.move_to(self, UNEXPLORED)
+    def at_dead_end(self, WALL):
+        directions_blocked = 0
+        DEAD_END = 3
+        START = 'S'
+        Player.get_surrounding_content(self)
+        for cell in self.content:
+            if cell in WALL:
+                directions_blocked += 1
+        if self.maze[self.vertical][self.horizontal] == START:
+            return False
+        return directions_blocked == DEAD_END
+
+    def get_surrounding_content(self):
+        content = []
+        surrounding = [(self.vertical - 1, self.horizontal),
+                       (self.vertical, self.horizontal + 1),
+                       (self.vertical + 1, self.horizontal),
+                       (self.vertical, self.horizontal - 1)
+                       ]
+        for x, y in surrounding:
+            content.append(self.maze[x][y])
+        self.content = content
+
+    def mark_as(self, SYMBOL):
+        self.maze[self.vertical][self.horizontal] = SYMBOL
+
+    def move(self, UNEXPLORED, EXPLORED, EXIT):
+        Player.get_dictonary_surrounding(self)
+        if UNEXPLORED in self.adjacent.values():
+            Player.move_to(self, UNEXPLORED)
+        elif EXIT in self.adjacent.values():
+            Player.move_to(self, EXIT)
         elif EXPLORED in self.adjacent.values():
-            Position.move_to(self, EXPLORED)
-        else:
-            r = input('d')
+            Player.move_to(self, EXPLORED)
 
-    def get_surrounding(self):
+    def get_dictonary_surrounding(self):
+        DIRECTIONS = ['up', 'right', 'down', 'left']
         adjacent = {}
-        x, y = self.x, self.y
-        first_entry = [x + 1, x, x - 1, x]
-        second_entry = [y, y + 1, y, y - 1]
-        DIRECTIONS = ['up', 'horizontal', 'vertical', 'left']
-        for direction, x, y in zip(DIRECTIONS, first_entry, second_entry):
-            adjacent[direction] = self.maze[x][y]
+        for key, value in zip(DIRECTIONS, self.content):
+            adjacent[key] = value
         self.adjacent = adjacent
 
     def move_to(self, SYMBOL):
-        x, y = Position.get_direction(self, SYMBOL)
-        self.x = self.x + x
-        self.y = self.y + y
+        x, y = Player.get_direction(self, SYMBOL)
+        self.horizontal += x
+        self.vertical += y
 
     def get_direction(self, SYMBOL):
-        directions = {'up' : (0, -1),
-                      'horizontal' : (1, 0),
-                      'vertical' : (0, 1),
-                      'left' : (-1, 0)
+        directions = {'up': (0, -1),
+                      'right': (1, 0),
+                      'down': (0, 1),
+                      'left': (-1, 0)
                       }
         for key in self.adjacent:
             if self.adjacent[key] == SYMBOL:
                 return directions[key]
 
-def locate(grid, symbol):
-    horizontal, vertical = 0, 0
-    for row in grid:
-        horizontal = 0
-        for cell in row:
-            if cell == symbol:
-                return (horizontal, vertical)
-            horizontal += 1
-        vertical += 1
-
-class Labyrinth:
-    def __init__(self, maze):
-        self.maze = maze
-
-    def is_dead_end(self, position):
-        WALL = ['#', 'd']
-        START = 'S'
-        DEAD_END = 3
-        surrounding = [(position.x + 1, position.y),
-                       (position.x, position.y + 1),
-                       (position.x - 1, position.y),
-                       (position.x, position.y - 1)
-                       ]
-        count = 0
-        for x, y in surrounding:
-            if self.maze[x][y] in WALL:
-                count += 1
-        return count == DEAD_END
-
-    def mark(self, position, symbol):
-        self.maze[position.x][position.y] = symbol
+    def print_maze(self, DEAD_END):
+        for row in self.maze:
+            line = ''.join(row).replace(DEAD_END, ' ')
+            print(line)
 
 maze_master('maze.txt')
