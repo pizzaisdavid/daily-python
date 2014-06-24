@@ -36,15 +36,15 @@ class Dealer:
 
     def deal(self):
         try:
-            hand = Dealer.select(self, 2)
+            hand = Dealer.select(self, CARD_COUNT=2)
             return Dealer.hit(self, hand)
         except IndexError:
             return None, None
 
-    def select(self, count):
+    def select(self, CARD_COUNT):
         FACE = 0
         hand = 0
-        for iterator in range(count):
+        for iterator in range(CARD_COUNT):
             hand += self.deck.pop()[FACE]
         return hand
 
@@ -52,7 +52,7 @@ class Dealer:
         LIMIT = 11
         if self.deck:
             if hand <= LIMIT:
-                hand += Dealer.select(self, 1)
+                hand += Dealer.select(self, CARD_COUNT=1)
         return hand
 
 class Score:
