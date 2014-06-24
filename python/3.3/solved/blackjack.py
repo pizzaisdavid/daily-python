@@ -26,7 +26,8 @@ class Dealer:
         for face in FACES:
             for suit in SUITES:
                 deck.append((face, suit))
-        self.deck = deck
+        decks = deck * self.NUMBER_OF_DECKS
+        self.deck = decks
 
     def shuffle(self):
         LENGTH = len(self.deck)
