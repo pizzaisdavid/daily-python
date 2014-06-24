@@ -20,9 +20,13 @@ class Dealer:
         return self.deck
 
     def create_deck(self):
-        NUMBER_OF_SUITS = 4
-        CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
-        self.deck = CARDS * NUMBER_OF_SUITS * self.NUMBER_OF_DECKS
+        SUITES = ['D', 'C', 'H', 'S']
+        FACES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+        deck = []
+        for face in FACES:
+            for suit in SUITES:
+                deck.append((face, suit))
+        self.deck = deck
 
     def shuffle(self):
         LENGTH = len(self.deck)
@@ -32,16 +36,23 @@ class Dealer:
 
     def deal(self):
         try:
-            hand = self.deck.pop() + self.deck.pop()
+            hand = Dealer.select(self, 2)
             return Dealer.hit(self, hand)
         except IndexError:
             return None, None
+
+    def select(self, count):
+        FACE = 0
+        hand = 0
+        for iterator in range(count):
+            hand += self.deck.pop()[FACE]
+        return hand
 
     def hit(self, hand):
         LIMIT = 11
         if self.deck:
             if hand <= LIMIT:
-                hand += self.deck.pop()
+                hand += Dealer.select(self, 1)
         return hand
 
 class Score:
