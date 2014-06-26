@@ -1,85 +1,60 @@
-from random import randrange
+from random import randrange, shuffle
 
 def black_jack():
     NUMBER_OF_DECKS = 3
     dealer = Dealer(NUMBER_OF_DECKS)
     score = Score()
-    deck = dealer.get_shuffled_deck()
-    while deck:
-        score.record(dealer.deal())
+    bet = 200
+    while dealer.deck:
+        score.record(dealer.deal(), bet)
     print_final(score)
 
 class Dealer:
     def __init__(self, NUMBER_OF_DECKS=1):
-        self.NUMBER_OF_DECKS = NUMBER_OF_DECKS
-        self.decks = []
+        self.deck = Dealer.create_deck(NUMBER_OF_DECKS)
+        shuffle(self.deck)
 
-    def get_shuffled_deck(self):
-        Dealer.create_deck(self)
-        Dealer.shuffle(self)
-        return self.deck
-
-    def create_deck(self):
-        SUITES = ['D', 'C', 'H', 'S']
-        FACES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
-        deck = []
-        for face in FACES:
-            for suit in SUITES:
-                deck.append((face, suit))
-        self.deck = deck * self.NUMBER_OF_DECKS
-
-    def shuffle(self):
-        LENGTH = len(self.deck)
-        for _ in range(LENGTH):
-            random_card = self.deck.pop(randrange(LENGTH))
-            self.deck.append(random_card)
+    def create_deck(NUMBER_OF_DECKS):
+        DECK = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11] * 4
+        return DECK * NUMBER_OF_DECKS
 
     def deal(self):
+        self.hand = 0
         try:
-            hand = Dealer.select(self, CARD_COUNT=2)
-            return Dealer.hit(self, hand)
+            Dealer.select(self, CARD_COUNT=2)
+            Dealer.hit(self)
+            return self.hand
         except IndexError:
-            return None, None
+            return None
 
     def select(self, CARD_COUNT):
-        FACE = 0
-        hand = 0
         for iterator in range(CARD_COUNT):
-            hand += self.deck.pop()[FACE]
-        return hand
+            self.hand += self.deck.pop()
 
-    def hit(self, hand):
+    def hit(self):
         LIMIT = 11
         if self.deck:
-            if hand <= LIMIT:
-                hand += Dealer.select(self, CARD_COUNT=1)
-        return hand
+            if self.hand <= LIMIT:
+                Dealer.select(self, CARD_COUNT=1)
 
 class Score:
-    def __init__(self, wins=0, total=0):
-        self.wins = wins
-        self.total = total
+    def __init__(self, money=2000):
+        self.money = money
+        self.total = 0
 
-    def record(self, hand):
-        INCREMENT = 1
+    def record(self, hand, bet):
         WINNING_SCORE = 21
+        winnings = bet * 2
         if hand is None:
             pass
         elif hand is WINNING_SCORE:
-            self.wins += INCREMENT
-        self.total += INCREMENT
+            self.money += winnings
+        else:
+            self.money -= bet
+        self.total += 1
 
 def print_final(score):
-    STATISTICS = 'After {0} hands there was {1} at {2}%'
-    print (STATISTICS.format(
-                        score.total,
-                        score.wins,
-                        percentage(score)))
-
-def percentage(score):
-    DECIMAL_PLACE = 2
-    CONVERT_TO_PERCENT = 100
-    percent = score.wins / float(score.total) * CONVERT_TO_PERCENT
-    return round(percent, DECIMAL_PLACE)
+    STATISTICS = 'After {0} hands you have made {1} dollars.'
+    print (STATISTICS.format(score.total, score.money))
 
 black_jack()
