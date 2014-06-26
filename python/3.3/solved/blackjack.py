@@ -3,10 +3,10 @@ from random import randrange, shuffle
 def black_jack():
     NUMBER_OF_DECKS = 3
     dealer = Dealer(NUMBER_OF_DECKS)
-    score = Score()
-    bet = 200
+    score = Score(200)
+    player = Player()
     while dealer.deck:
-        score.record(dealer.deal(), bet)
+        score.record(dealer.deal(), player.bet)
     print_final(score)
 
 class Dealer:
@@ -20,38 +20,41 @@ class Dealer:
 
     def deal(self):
         self.hand = 0
-        try:
-            Dealer.select(self, CARD_COUNT=2)
-            Dealer.hit(self)
-            return self.hand
-        except IndexError:
-            return None
+        Dealer.select(self, CARD_COUNT=2)
+        Dealer.hit(self)
+        return self.hand
 
     def select(self, CARD_COUNT):
-        for iterator in range(CARD_COUNT):
-            self.hand += self.deck.pop()
+        try: 
+            for iterator in range(CARD_COUNT):
+                self.hand += self.deck.pop()
+        except IndexError:
+            pass
 
     def hit(self):
         LIMIT = 11
-        if self.deck:
-            if self.hand <= LIMIT:
-                Dealer.select(self, CARD_COUNT=1)
-
+        if self.hand <= LIMIT:
+            Dealer.select(self, CARD_COUNT=1)
+        
 class Score:
-    def __init__(self, money=2000):
+    def __init__(self, money):
         self.money = money
         self.total = 0
 
-    def record(self, hand, bet):
+    def record(self, score, bet):
         WINNING_SCORE = 21
         winnings = bet * 2
-        if hand is None:
+        if score is None:
             pass
-        elif hand is WINNING_SCORE:
+        elif score is WINNING_SCORE:
             self.money += winnings
         else:
             self.money -= bet
         self.total += 1
+
+class Player:
+    def __init__(self):
+        self.bet = 1
 
 def print_final(score):
     STATISTICS = 'After {0} hands you have made {1} dollars.'
