@@ -18,8 +18,7 @@ def introduction(options):
     print (' ')
     return TYPE
 
-def get_input(options):
-    STOP = ['exit', 'stop', 'no']
+def get_input(options, STOP=[]):
     choice = input('Enter: ').lower()
     while choice not in options + STOP:
         choice = input(options).lower()
@@ -34,11 +33,12 @@ def game(TYPE, options, score):
         'spock': (['rock', 'scissors'], ['vaporizes', 'smashes'], ['paper', 'lizard']),
         'lizard': (['spock', 'paper'], ['poisons', 'eats'], ['rock', 'scissors'])
         }
-    ai = AI(rules, options)
+    ai = AI(TYPE, rules, options)
     while True:
-        human = get_input(options)
+        STOP = ['exit', 'stop', 'no']
+        human = get_input(options, STOP)
         computer = ai.pick()
-        if human in quits:
+        if human in STOP:
             break
         print ('player pick: {0}'.format(human))
         print ('computer pick: {0}'.format(computer))
@@ -73,7 +73,7 @@ class AI:
                     }
         self.tied = (False, '')
 
-    def pick(self, TYPE):
+    def pick(self):
         if self.TYPE == 'random':
             return AI.random(self)
         elif self.TYPE == 'learning':
