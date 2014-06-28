@@ -9,8 +9,17 @@ def setup(filename):
     data = []
     file = open(filename)
     for line in file:
-        first, last, *assignments = line.split()
-        data.append([first, last, sorted(map(int, assignments))])
+        first, comma, last, *assignments = line.split()
+        if last == ',':
+            last =''
+        if assignments[0].isalpha():
+            last += ' ' +  assignments.pop(0)
+        if comma.isalpha():
+            first += ' ' + comma
+        data.append([first.strip(),
+                     last.strip(),
+                     sorted(map(int, assignments))
+                     ])
     file.close()
     return data
 
@@ -20,8 +29,8 @@ class Student:
         self.first = first
         self.last = last
         self.assignments = assignments
-        self.percentage = Student.average(assignments)
-        self.grade = Student.letter(self.percentage)
+        self.percent = Student.average(assignments)
+        self.grade = Student.letter(self.percent)
 
     def average(grades):
         POINTS_POSSIBLE = 500
@@ -55,7 +64,7 @@ def output(students):
     length_first = longest(students, 'first')
     length_last = longest(students, 'last')
     print_header(length_first, length_last)
-    students = reversed(sorted(students, key = lambda x: x.percentage))
+    students = reversed(sorted(students, key = lambda x: x.percent))
     for student in students:
         grade_space = grade_spacing(student.grade)
         first_spaces = spacing(length_first, student.first)
@@ -64,13 +73,13 @@ def output(students):
                               first_spaces,
                               student.last,
                               last_spaces,
-                              student.percentage,
+                              student.percent,
                               student.grade,
                               grade_space,
-                              student.assignments))
+                              ', '.join(map(str, student.assignments))
+                              )
+              )
                               
-        
-    
 def longest(sequence, attribute):
     items = []
     for element in sequence:
@@ -79,9 +88,9 @@ def longest(sequence, attribute):
     return len(long)
 
 def print_header(length_first, length_last):
-    KEY = 'FIRST{0} LAST{1}   % ( ) :   ,   ,   ,   ,   '
-    print(KEY.format(spacing(length_first, 'FIRST'),
-                     spacing(length_last, 'LAST')))
+    HEADER = 'FIRST{0} LAST{1}   % ( ) :   ,   ,   ,   ,   '
+    print(HEADER.format(spacing(length_first, 'FIRST'),
+                        spacing(length_last, 'LAST')))
     print('-' * (length_first + length_last + 33))
 
 def spacing(large, small):
