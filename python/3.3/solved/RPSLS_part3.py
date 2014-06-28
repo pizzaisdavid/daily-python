@@ -1,11 +1,11 @@
 from random import randint
 
 def main():
-    score = reset_score()
+    score = Score()
     options = ['lizard', 'spock', 'paper', 'scissors', 'rock']
     TYPE = introduction(options)
-    score = game(TYPE, options, score)
-    scoreboard(TYPE, score)
+    game(TYPE, options, score)
+    score.board(TYPE)
     
 def introduction(options):
     print ('WELCOME TO ROCK, PAPER, SCISSORS, SPOCK, LIZARD')
@@ -18,15 +18,14 @@ def introduction(options):
     print (' ')
     return TYPE
 
-def get_input(options, stop=['']):
-    combine = options + stop
+def get_input(options):
+    STOP = ['exit', 'stop', 'no']
     choice = input('Enter: ').lower()
-    while choice not in combine:
+    while choice not in options + STOP:
         choice = input(options).lower()
     return choice
 
 def game(TYPE, options, score):
-    quits = ['exit', 'stop']
     rules = {
         # 'option': (['things it beats'], ['attack'], ['it loses to'])
         'rock': (['scissors', 'lizard'], ['crushes', 'crushes'], ['paper', 'spock']),
@@ -35,14 +34,14 @@ def game(TYPE, options, score):
         'spock': (['rock', 'scissors'], ['vaporizes', 'smashes'], ['paper', 'lizard']),
         'lizard': (['spock', 'paper'], ['poisons', 'eats'], ['rock', 'scissors'])
         }
-    ai = initialize_AI(TYPE, rules, options)
+    ai = AI(rules, options)
     while True:
-        human = get_input(options, quits)
-        computer = ai.select(TYPE)
+        human = get_input(options)
+        computer = ai.pick()
         if human in quits:
             break
-        print ('player pick: ' + human)
-        print ('computer pick: ' + computer)
+        print ('player pick: {0}'.format(human))
+        print ('computer pick: {0}'.format(computer))
         computer_is_winner, computer_index = occurrences(rules[human][0], computer)
         human_is_winner, human_index = occurrences(rules[computer][0], human)
         if human == computer:
@@ -51,35 +50,36 @@ def game(TYPE, options, score):
            ai.tied = (True, human)
         elif computer_is_winner:
             attack = rules[computer][1][human_index]
-            print (computer, attack, human, 'computer wins!', sep=' ')
-            score.computer += 1
+            print ('{0} {1} {2} computer wins!'.format(computer, attack, human))
+            score.losses += 1
         elif human_is_winner:
             attack = rules[human][1][computer_index]
-            print (human, attack, computer, 'human wins!', sep=' ')
-            score.human += 1
+            print ('{0} {1} {2} human wins!'.format(human, attack, computer))
+            score.wins += 1
         ai.played[human] += 1
         print (' ')
-    return score
-
-def initialize_AI(TYPE, rules, options):
-    played = {
-    'lizard': 0,
-    'spock': 0,
-    'paper': 0,
-    'scissors': 0,
-    'rock': 0
-    }
-    tied = (False, '')
-    return AI(TYPE, rules, options, played, tied)
 
 class AI:
-    
-    def __init__(self, TYPE='', rules={}, options=[], played={}, tied=()):
+    def __init__(self, TYPE, rules, options):
         self.TYPE = TYPE
         self.rules = rules
         self.options = options
-        self.played = played
-        self.tied = tied
+        self.played = {
+                    'lizard': 0,
+                    'spock': 0,
+                    'paper': 0,
+                    'scissors': 0,
+                    'rock': 0
+                    }
+        self.tied = (False, '')
+
+    def pick(self, TYPE):
+        if self.TYPE == 'random':
+            return AI.random(self)
+        elif self.TYPE == 'learning':
+            return AI.learning(self)
+        elif self.TYPE == 'counter':
+            return AI.counter(self)
     
     def random(self):
         return self.options[randint(0, 4)]
@@ -100,14 +100,6 @@ class AI:
             }
         return counter_counters[highest(self.played)]
 
-    def select(self, TYPE):
-        if TYPE == 'random':
-            return AI.random(self)
-        elif TYPE == 'learning':
-            return AI.learning(self)
-        elif TYPE == 'counter':
-            return AI.counter(self)
-
 def occurrences(sequence, find):
     for index, element in enumerate(sequence):
         if element == find:
@@ -117,32 +109,25 @@ def occurrences(sequence, find):
 def highest(dictonary):
     return max(dictonary, key=lambda x: x[0])
         
-class reset_score:
+class Score:
+    def __init__(self):
+        self.wins = 0
+        self.losses = 0
+        self.ties = 0
     
-    def __init__(self, human=0, computer=0, ties=0):
-        self.human = human
-        self.computer = computer
-        self.ties = ties
+    def percent(total, numerator):
+        DECIMAL_PLACE = 2
+        CONVERT_TO_PERCENT = 100
+        percent = numerator / float(total) * CONVERT_TO_PERCENT
+        return round(percent, DECIMAL_PLACE)
         
-    def total(self):
-        return self.human + self.computer + self.ties
-    
-def percentage(wins, total):
-    DECIMAL_PLACE = 2
-    CONVERT_TO_PERCENT = 100
-    percent = wins / float(total) * CONVERT_TO_PERCENT
-    return str(round(percent, DECIMAL_PLACE)) + '%'
-    
-def scoreboard(TYPE, score):
-    total = score.total()
-    human = score.human
-    computer = score.computer
-    ties = score.ties
-    banner = '~~~~~~~~FINAL~SCORE~~~~~~~~'
-    print (banner)
-    print ('TIES:', ties, percent(ties, total), sep=' ')
-    print ('HUMAN:', human, percent(human, total), sep=' ')
-    print ('COMPUTER(' + TYPE + '):', computer, percent(computer, total), sep=' ')
-    print (banner)
+    def board(self, TYPE):
+        BANNER = '~~~~~~~~FINAL~SCORE~~~~~~~~'
+        total = self.wins + self.losses + self.ties
+        print(BANNER)
+        print('TIES: {0} {1}%'.format(self.ties, Score.percent(total, self.ties)))
+        print('HUMAN: {0} {1}%'.format(self.wins, Score.percent(total, self.wins)))
+        print('COMPUTER({0}) {1} {2}%'.format(TYPE, self.losses, Score.percent(total, self.losses)))
+        print(BANNER)
 
 main()
