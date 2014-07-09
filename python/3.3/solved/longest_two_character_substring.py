@@ -1,42 +1,30 @@
 def longest_two_character_substring(string):
-	'''Returns the longest two character substring.'''
-	pairs = unique_pairs(string)
-	substrings = []
-	longest = ''
-	for pair in pairs:
-		substrings.extend(occurrences(string, pair))
-	print (max(substrings, key = len))
+    substrings = []
+    for pair in get_unique_pairs(string):
+        substrings.extend(get_consecutive_substrings(string, pair))
+    print(max(substrings, key=len))
 
-def unique_pairs(sequence):
-	'''Returns unique two character tuples in a list.'''
-	return unique_combinations(get_pairs(sequence))
+def get_unique_pairs(sequence):
+    combinations = get_character_combinations(sequence)
+    return set(combinations) & set(map(reformat, combinations))
 
-def get_pairs(sequence):
-	'''Iterates over the sequence creating pairs.'''
-	pairs = []
-	for index, item in enumerate(sequence):
-		try:
-			pairs.append((item, sequence[index + 1]))
-		except IndexError:
-			pass
-	return pairs
+def get_character_combinations(sequence):
+    LENGTH = 2
+    return [sequence[i: i + LENGTH] for i, _ in enumerate(sequence)]
 
-def unique_combinations(sequence):
-	'''Pairs must be two unique characters. Removes duplicates, order doesn't matter.'''
-	unique = []
-	for pair in sequence:
-		combination = sorted(set(pair))
-		if len(combination) == 2 and combination not in unique:
-			unique.append(combination)
-	return unique
+def reformat(string):
+    return ''.join(sorted(string))
 
-def occurrences(sequence, find):
-	'''Returns a list of substrings that are made of find.'''
-	substrings = ['']
-	for item in sequence:
-		if item in find:
-			substrings[-1] += item
-		else:
-			substrings.append('')
-	return substrings
-longest_two_character_substring('abbxcccc')
+def get_consecutive_substrings(sequence, pair):
+    SPLITTER = ', '
+    strings = [is_in(SPLITTER, pair, item) for item in sequence]
+    return ''.join(strings).split(SPLITTER)
+
+def is_in(SPLITTER, check, item):
+    if item in check:
+        return item
+    return SPLITTER
+
+longest_two_character_substring('abbccc')
+longest_two_character_substring('abcabcabcabccc')
+longest_two_character_substring('qwertyytrewq')
