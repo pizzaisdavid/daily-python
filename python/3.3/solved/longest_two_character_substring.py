@@ -1,12 +1,12 @@
 def longest_two_character_substring(string):
     substrings = []
     for pair in get_unique_pairs(string):
-        substrings.extend(get_consecutive_substrings(string, pair))
+        substrings.extend(get_substrings_made_from_pair(string, pair))
     print(max(substrings, key=len))
 
 def get_unique_pairs(sequence):
-    combinations = get_character_combinations(sequence)
-    return set(combinations) & set(map(reformat, combinations))
+    pairs = get_character_combinations(sequence)
+    return set(pairs) & set(map(reformat, pairs))
 
 def get_character_combinations(sequence):
     LENGTH = 2
@@ -15,7 +15,7 @@ def get_character_combinations(sequence):
 def reformat(string):
     return ''.join(sorted(string))
 
-def get_consecutive_substrings(sequence, pair):
+def get_substrings_made_from_pair(sequence, pair):
     SPLITTER = ', '
     strings = [is_in(SPLITTER, pair, item) for item in sequence]
     return ''.join(strings).split(SPLITTER)
