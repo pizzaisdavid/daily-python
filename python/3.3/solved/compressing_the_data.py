@@ -1,68 +1,46 @@
 def compress(filename):
-    lines = [line.strip() for line in open(filename).readlines()]
-    keywords = add_keywords(lines)
-    compressed = []
-    for physical_line in lines:
-        compressed.append(translate_line(keywords, physical_line))
+    lines, keywords = setup(filename)
+    compressed = [convert_line(keywords, line) for line in lines]
     print_output(keywords, compressed)
 
-def add_keywords(lines):
-    keywords = []
-    for physical_line in lines:
-        words = physical_line.split(' ')
-        for word in words:
-            word = remove_symbols_and_capitalization(word)
-            if word not in keywords:
-                keywords.append(word.lower())
-    return keywords
+def setup(filename):
+    lines = [line.strip().split(' ') for line in open(filename)]
+    words = [reformat(word) for line in lines for word in line]
+    return lines, list(set(words))
 
-def remove_symbols_and_capitalization(word):
-    return remove_symbols(remove_capitalization(word))
+def reformat(word):
+    return remove_symbols(word.lower())
 
 def remove_symbols(word):
     SYMBOLS = '.,?!;:'
-    last_character = word[-1]
-    if last_character in SYMBOLS:
+    if word[-1] in SYMBOLS:
         return word[:-1]
     return word
 
-def remove_capitalization(word):
-    return word.lower()
+def convert_line(keywords, line):
+    return ''.join([convert(keywords, word) for word in line]) + 'R'
 
-def translate_line(keywords, physical_line):
-    chunks = ''
-    for keyword in physical_line.split(' '):
-        chunks += keyword_to_chunk(keywords, keyword)
-    return chunks + 'R'
-
-def keyword_to_chunk(keywords, keyword):
+def convert(keywords, word):
     SYMBOLS = '.,?!;:'
-    chunk = convert_to_chunk(keywords, keyword)
-    last_character = keyword[-1]
-    if keyword == keyword.capitalize():
+    chunk = convert_word(keywords, word)
+    last_character = word[-1]
+    if word == word.capitalize():
         chunk += '^'
-    elif keyword == keyword.upper():
+    elif word == word.upper():
         chunk += '!'
     if last_character in SYMBOLS:
         chunk += ' ' + last_character
     return chunk + ' '
 
+def convert_word(keywords, word):
+    return str(keywords.index(reformat(word)))
 
-def convert_to_chunk(keywords, keyword):
-    keyword = remove_symbols_and_capitalization(keyword)
-    for index, word in enumerate(keywords):
-        if word == keyword:
-            return str(index)
-
-def print_output(keywords, compressed):
-    print(len(keywords))
-    print_loop(keywords)
-    print_loop(compressed)
+def print_output(*arguments):
+    print(len(arguments[0]))
+    [print_list(argument) for argument in arguments]
     print('E')
 
-
-def print_loop(sequence):
-    for item in sequence:
-        print(item)
+def print_list(sequence):
+    [print(item) for item in sequence]
 
 compress('compression1.txt')
