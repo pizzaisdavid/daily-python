@@ -1,7 +1,7 @@
 def longest_two_character_substring(string):
     substrings = []
     for pair in get_unique_combinations(string):
-        substrings.extend(get_substrings_of_consecutive_letters(string, pair))
+        substrings.extend(get_substrings_of_consecutive_characters(string, pair))
     print(max(substrings, key=len))
 
 def get_unique_combinations(sequence):
@@ -14,7 +14,7 @@ def get_n_length_character_combinations(sequence, length=2):
 def reformat(string):
     return ''.join(sorted(string))
 
-def get_substrings_of_consecutive_letters(string, group):
+def get_substrings_of_consecutive_characters(string, group):
     SEPARATOR = ', '
     substrings = [letter if letter in group else SEPARATOR for letter in string]
     return ''.join(substrings).split(SEPARATOR)
