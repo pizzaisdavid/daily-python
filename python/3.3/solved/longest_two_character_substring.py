@@ -15,9 +15,9 @@ def reformat(string):
     return ''.join(sorted(string))
 
 def get_substrings_of_consecutive_letters(string, group):
-    SPLIT = ', '
-    substrings = [letter if letter in group else SPLIT for letter in string]
-    return ''.join(substrings).split(SPLIT)
+    SEPARATOR = ', '
+    substrings = [letter if letter in group else SEPARATOR for letter in string]
+    return ''.join(substrings).split(SEPARATOR)
 
 longest_two_character_substring('abbccc')
 longest_two_character_substring('abcabcabcabccc')
