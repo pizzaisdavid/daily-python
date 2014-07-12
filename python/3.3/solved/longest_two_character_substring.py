@@ -5,8 +5,7 @@ def longest_two_character_substring(string):
     print(max(substrings, key=len))
 
 def get_unique_combinations(sequence):
-    combinations = get_n_length_character_combinations(sequence)
-    return set(combinations) & set(map(reformat, combinations))
+    return set(map(reformat, get_n_length_character_combinations(sequence)))
 
 def get_n_length_character_combinations(sequence, length=2):
     return [sequence[i: i + length] for i, _ in enumerate(sequence)]
