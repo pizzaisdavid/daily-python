@@ -1,8 +1,8 @@
 def thue_morse_sequence(count):
     header()
-    current = '0'
+    current = ['0']
     for n in range(0, count + 1):
-        current += inverse(current)
+        current.extend(invert(current))
         ouput(n, current)
 
 def header():
@@ -10,15 +10,13 @@ def header():
     print('-' * 30)
 
 def inverse(sequence):
-    return ''.join([switch(element) for element in sequence])
+    return [switch(element) for element in sequence]
 
 def switch(character):
-    if int(character):
-        return '0'
-    return '1'
+    return '0' if int(character) else '1'
 
 def output(n, current):
     SPACING = 3
-    print(n, ' ' * SPACING, current)
+    print(n, ' ' * SPACING, ''.join(current))
 
 thue_morse_sequence(6)
