@@ -1,10 +1,10 @@
 def longest_word(filename):
     words, characters = setup(filename)
-    accepted = {}
+    valid = []
     for word in words:
         if is_possible(list(word), characters):
-            add(accepted, word)
-    output(accepted)
+            valid.append(word)
+    output(valid)
 
 def setup(filename):
     with open(filename) as file:
@@ -15,21 +15,16 @@ def is_possible(word, available):
         delete(word, character)
     return word == []
 
-def delete(sequence, element):
+def delete(sequence, item):
     try:
-        sequence.remove(element)
+        sequence.remove(item)
     except ValueError:
         pass
-        
-def add(sequence, element):
-    length = len(element)
-    if length not in sequence:
-        sequence[length] = []
-    sequence[length].append(element)
 
-def output(dictonary):
+def output(sequence):
     try:
-        print(dictonary[max(dictonary.keys())])
+        length = len(max(sequence, key=len))
+        print([item for item in sequence if length == len(item)])
     except ValueError:
         print('No Words Found')
     
