@@ -2,7 +2,7 @@ def longest_word(filename):
     words, characters = setup(filename)
     passed = Passed()
     for word in words:
-        if is_possible(word, list(characters)):
+        if is_possible(list(word), characters):
             passed.add(word)
     passed.longest()
 
@@ -11,15 +11,16 @@ def setup(filename):
         return [line.strip().split(' ') for line in file]
 
 def is_possible(word, available):
-    return all([is_in(available, character) for character in word])
+    for character in available:
+        delete(word, character)
+    return word == []
 
-def is_in(available, character):
+def delete(sequence, element):
     try:
-        available.remove(character)
+        sequence.remove(element)
     except ValueError:
-        return False
-    return True
-    
+        pass
+        
 class Passed:
     def __init__(self):
         self.words = {}
@@ -32,7 +33,8 @@ class Passed:
 
     def longest(self):
         try:
-            print(self.words[max(self.words.keys())])
+            words = self.words
+            print(words[max(words.keys())])
         except ValueError:
             print('No Words Found')
 
