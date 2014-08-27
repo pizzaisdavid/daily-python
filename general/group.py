@@ -4,6 +4,6 @@ def group(sequence):
     for element in sequence:
         key = len(elment) # Characteristic we are grouping by.
         if key not in dictionary:
-            dictonary[key] = []
-        dictonary[key].append(element)
-    return dictonary
+            dictionary[key] = []
+        dictionary[key].append(element)
+    return dictionary
